@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
- NAME_platform_interface: VERSION
+  NAME_platform_interface: #^VERSION
+    path: ../NAME_platform_interface
 
 dev_dependencies:
   flutter_test:

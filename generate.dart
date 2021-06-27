@@ -115,7 +115,50 @@ Future<void> main(List<String> args) async {
     await rewriteChangelog(platformChangelog, version);
     await rewritePubspec(new File(directory.path + '/pubspec.yaml'), pluginName,
         classCase, bundle, version, repository);
+    await for (FileSystemEntity entity in directory.list(recursive: true)) {
+      if (entity is File) {
+        if (entity.path.endsWith('.dart')) {
+          await rewriteDartFile(entity, pluginName, classCase);
+        }
+      }
+    }
   }
+  Directory interfaceDirectory =
+      new Directory(Directory.current.path + '/NAME_platform_interface');
+  interfaceDirectory =
+      await interfaceDirectory.rename(pluginName + '_platform_interface');
+  File interfaceChangelog =
+      await changelogTemplate.copy(interfaceDirectory.path + '/CHANGELOG.md');
+  await rewriteChangelog(interfaceChangelog, version);
+  await rewritePlatformInterfaceReadme(
+      new File(interfaceDirectory.path + '/README.md'), pluginName, classCase);
+  await rewritePubspec(new File(interfaceDirectory.path + '/pubspec.yaml'),
+      pluginName, classCase, bundle, version, repository);
+  await licenseTemplate.copy(interfaceDirectory.path + '/LICENSE');
+  await for (FileSystemEntity entity
+      in interfaceDirectory.list(recursive: true)) {
+    if (entity is File) {
+      if (entity.path.endsWith('.dart')) {
+        await rewriteDartFile(entity, pluginName, classCase);
+      }
+    }
+  }
+  Directory mainDirectory = new Directory(Directory.current.path + '/NAME');
+  mainDirectory = await mainDirectory.rename(pluginName);
+  File mainChangelog =
+      await changelogTemplate.copy(mainDirectory.path + '/CHANGELOG.md');
+  await rewriteChangelog(mainChangelog, version);
+  await rewriteMainPubspec(new File(interfaceDirectory.path + '/pubspec.yaml'),
+      pluginName, version, repository, ios, android, windows, web);
+  await licenseTemplate.copy(interfaceDirectory.path + '/LICENSE');
+  await for (FileSystemEntity entity in mainDirectory.list(recursive: true)) {
+    if (entity is File) {
+      if (entity.path.endsWith('.dart')) {
+        await rewriteDartFile(entity, pluginName, classCase);
+      }
+    }
+  }
+  await cleanUp();
 }
 
 String entityName(FileSystemEntity entity) {
@@ -217,14 +260,18 @@ Future<void> rewriteMainPubspec(File file, String name, String version,
       inFlutterSection = true;
     } else {
       if (iterator.current.startsWith('  ' + name + '_ios') && !ios) {
+        iterator.moveNext();
         continue;
       } else if (iterator.current.startsWith('  ' + name + '_android') &&
           !android) {
+        iterator.moveNext();
         continue;
       } else if (iterator.current.startsWith('  ' + name + '_web') && !web) {
+        iterator.moveNext();
         continue;
       } else if (iterator.current.startsWith('  ' + name + '_windows') &&
           !windows) {
+        iterator.moveNext();
         continue;
       }
     }
