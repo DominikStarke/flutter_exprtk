@@ -165,6 +165,7 @@ Future<void> main(List<String> args) async {
 
 Future<void> flutterCreatePlugin(
     Directory dir, String platform, String bundle) async {
+  platform = platform.toLowerCase();
   await Process.run(
       'flutter',
       [
@@ -175,7 +176,8 @@ Future<void> flutterCreatePlugin(
         '--org=$bundle',
         '.'
       ],
-      workingDirectory: dir.path);
+      runInShell: true,
+      workingDirectory: dir.absolute.path);
   await new Directory(dir.path + '/example').delete(recursive: true);
   await new Directory(dir.path + '/test').delete(recursive: true);
   if (platform == 'web') {
