@@ -212,6 +212,12 @@ Future<void> rewriteChangelog(File changelog, String version) async {
 Future<void> rewriteDartFile(File file, String name, String className) async {
   String content = await file.readAsString();
   content = content.replaceAll('NAME', name).replaceAll('CLASS', className);
+  String fileName = entityName(file);
+  if (fileName.startsWith('NAME')) {
+    fileName = fileName.replaceAll('NAME', name);
+    await file.delete();
+    file = new File(file.parent.path + '/' + fileName);
+  }
   await file.writeAsString(content);
 }
 
