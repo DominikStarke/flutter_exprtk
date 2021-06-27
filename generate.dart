@@ -301,7 +301,7 @@ Future<void> rewriteMainPubspec(File file, String name, String version,
   bool inFlutterSection = false;
   while (iterator.moveNext()) {
     if (inFlutterSection) {
-      String label = iterator.current.trimLeft();
+      String label = iterator.current.trim();
       if (label == 'ios:' && !ios) {
         iterator.moveNext();
         continue;
