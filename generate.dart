@@ -148,9 +148,9 @@ Future<void> main(List<String> args) async {
   File mainChangelog =
       await changelogTemplate.copy(mainDirectory.path + '/CHANGELOG.md');
   await rewriteChangelog(mainChangelog, version);
-  await rewriteMainPubspec(new File(interfaceDirectory.path + '/pubspec.yaml'),
+  await rewriteMainPubspec(new File(mainDirectory.path + '/pubspec.yaml'),
       pluginName, version, repository, ios, android, windows, web);
-  await licenseTemplate.copy(interfaceDirectory.path + '/LICENSE');
+  await licenseTemplate.copy(mainDirectory.path + '/LICENSE');
   await for (FileSystemEntity entity in mainDirectory.list(recursive: true)) {
     if (entity is File) {
       if (entity.path.endsWith('.dart')) {
