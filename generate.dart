@@ -5,9 +5,9 @@ Future<void> main(List<String> args) async {
     print('Expecting 4 or 3 parameters! See README!');
     return;
   }
-  String name = args[0];
-  print('Plugin name: $name');
-  String classCase = toClassCase(name);
+  String pluginName = args[0];
+  print('Plugin name: $pluginName');
+  String classCase = toClassCase(pluginName);
   print('Class name; $classCase');
   String bundle = args[1];
   print('Bundle: $bundle');
@@ -55,7 +55,7 @@ Future<void> main(List<String> args) async {
       } else if (name == 'FEDERATED_README_TEMPLATE.md') {
         readmeTemplate = entity;
       } else if (name == 'FEDERATED_LICENSE_TEMPLATE') {
-        licenseTemplate = licenseTemplate;
+        licenseTemplate = entity;
       }
     }
   }
@@ -104,7 +104,8 @@ Future<void> main(List<String> args) async {
         .cast<Directory>()
         .firstWhere(
             (Directory dir) => entityName(dir) == 'NAME_' + platformLower);
-    directory = await directory.rename(name = '_' + platformLower);
+    String newName = pluginName + '_' + platformLower;
+    directory = await directory.rename(newName);
     await licenseTemplate.copy(directory.path + '/LICENSE');
     File platformReadme =
         await readmeTemplate.copy(directory.path + '/README.md');
@@ -112,7 +113,7 @@ Future<void> main(List<String> args) async {
     File platformChangelog =
         await changelogTemplate.copy(directory.path + '/CHANGELOG.md');
     await rewriteChangelog(platformChangelog, version);
-    await rewritePubspec(new File(directory.path + '/pubspec.yaml'), name,
+    await rewritePubspec(new File(directory.path + '/pubspec.yaml'), pluginName,
         classCase, bundle, version, repository);
   }
 }
