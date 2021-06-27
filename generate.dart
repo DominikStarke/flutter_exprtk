@@ -122,6 +122,7 @@ Future<void> main(List<String> args) async {
         }
       }
     }
+    await flutterCreatePlugin(directory, platform, bundle);
   }
   Directory interfaceDirectory =
       new Directory(Directory.current.path + '/NAME_platform_interface');
@@ -143,6 +144,7 @@ Future<void> main(List<String> args) async {
       }
     }
   }
+
   Directory mainDirectory = new Directory(Directory.current.path + '/NAME');
   mainDirectory = await mainDirectory.rename(pluginName);
   File mainChangelog =
@@ -159,6 +161,31 @@ Future<void> main(List<String> args) async {
     }
   }
   await cleanUp();
+}
+
+Future<void> flutterCreatePlugin(
+    Directory dir, String platform, String bundle) async {
+  await Process.run(
+      'flutter',
+      [
+        'create',
+        '--template=plugin',
+        '--platforms=$platform',
+        '--android-language=java',
+        '--org=$bundle',
+        '.'
+      ],
+      workingDirectory: dir.path);
+  await new Directory(dir.path + '/example').delete(recursive: true);
+  await new Directory(dir.path + '/test').delete(recursive: true);
+  if (platform == 'web') {
+    File f = await new Directory(dir.path + '/lib')
+        .list()
+        .where((FileSystemEntity e) => entityName(e).endsWith('_web_web.dart'))
+        .cast<File>()
+        .first;
+    await f.delete();
+  }
 }
 
 String entityName(FileSystemEntity entity) {
