@@ -1,7 +1,7 @@
 import 'dart:io';
 
 Future<void> main(List<String> args) async {
-  if (args.length != 3 || args.length != 4) {
+  if (args.length != 3 && args.length != 4) {
     print('Expecting 4 or 3 parameters! See README!');
     return;
   }
@@ -26,15 +26,11 @@ Future<void> main(List<String> args) async {
   bool windows = false;
   bool foundPlatformInterface = false;
   bool foundMain = false;
-  bool foundLicense = false;
-  bool foundReadme = false;
-  bool foundChangelog = false;
+  File? licenseTemplate;
+  File? readmeTemplate;
+  File? changelogTemplate;
   await for (FileSystemEntity entity in Directory.current.list()) {
-    String name = entity.path.replaceAll('\\', '/');
-    int index = name.lastIndexOf('/');
-    if (index >= 0) {
-      name = name.substring(index);
-    }
+    String name = entityName(entity);
     if (entity is Directory) {
       if (name == 'NAME_ios') {
         print('Targeting ios');
@@ -55,11 +51,11 @@ Future<void> main(List<String> args) async {
       }
     } else if (entity is File) {
       if (name == 'FEDERATED_CHANGELOG_TEMPLATE.md') {
-        foundChangelog = true;
+        changelogTemplate = entity;
       } else if (name == 'FEDERATED_README_TEMPLATE.md') {
-        foundReadme = true;
+        readmeTemplate = entity;
       } else if (name == 'FEDERATED_LICENSE_TEMPLATE') {
-        foundLicense = true;
+        licenseTemplate = licenseTemplate;
       }
     }
   }
@@ -71,15 +67,15 @@ Future<void> main(List<String> args) async {
     print('NAME_platform_interface foulder not found!');
     return;
   }
-  if (!foundLicense) {
+  if (licenseTemplate == null) {
     print('FEDERATED_LICENSE_TEMPLATE not found!');
     return;
   }
-  if (!foundReadme) {
+  if (readmeTemplate == null) {
     print('FEDERATED_README_TEMPLATE not found!');
     return;
   }
-  if (!foundChangelog) {
+  if (changelogTemplate == null) {
     print('FEDERATED_CHANGELOG_TEMPLATE not found!');
     return;
   }
@@ -87,6 +83,47 @@ Future<void> main(List<String> args) async {
     print('No target!');
     return;
   }
+  List<String> platforms = [];
+  if (ios) {
+    platforms.add('iOS');
+  }
+  if (android) {
+    platforms.add('Android');
+  }
+  if (web) {
+    platforms.add('Web');
+  }
+  if (windows) {
+    platforms.add('Windows');
+  }
+  for (String platform in platforms) {
+    String platformLower = platform.toLowerCase();
+    Directory directory = await Directory.current
+        .list()
+        .where((event) => event is Directory)
+        .cast<Directory>()
+        .firstWhere(
+            (Directory dir) => entityName(dir) == 'NAME_' + platformLower);
+    directory = await directory.rename(name = '_' + platformLower);
+    await licenseTemplate.copy(directory.path + '/LICENSE');
+    File platformReadme =
+        await readmeTemplate.copy(directory.path + '/README.md');
+    await rewriteReadme(platformReadme, platform, version, classCase);
+    File platformChangelog =
+        await changelogTemplate.copy(directory.path + '/CHANGELOG.md');
+    await rewriteChangelog(platformChangelog, version);
+    await rewritePubspec(new File(directory.path + '/pubspec.yaml'), name,
+        classCase, bundle, version, repository);
+  }
+}
+
+String entityName(FileSystemEntity entity) {
+  String name = entity.path.replaceAll('\\', '/');
+  int index = name.lastIndexOf('/');
+  if (index >= 0) {
+    name = name.substring(index + 1);
+  }
+  return name;
 }
 
 String toClassCase(String name) {
@@ -103,13 +140,22 @@ String capitalize(String s) {
   }
 }
 
-Future<void> rewriteReadme(File readme, String platform, String version) async {
+Future<void> rewriteReadme(
+    File readme, String platform, String version, String className) async {
   String underscorePlatform = '_' + platform.toLowerCase();
   String content = await readme.readAsString();
   content = content
       .replaceAll('_PLATFORM', underscorePlatform)
       .replaceAll('PLATFORM', platform)
-      .replaceAll('VERSION', version);
+      .replaceAll('VERSION', version)
+      .replaceAll('CLASS', className);
+  await readme.writeAsString(content);
+}
+
+Future<void> rewritePlatformInterfaceReadme(
+    File readme, String name, String className) async {
+  String content = await readme.readAsString();
+  content = content.replaceAll('NAME', name).replaceAll('CLASS', className);
   await readme.writeAsString(content);
 }
 
