@@ -166,7 +166,7 @@ Future<void> main(List<String> args) async {
   flutterGetDirs.add(mainDirectory);
   await flutterCreatePackage(mainDirectory);
 
-  // await Future.wait(flutterGetDirs.reversed.map(flutterPackagesGet));
+  await Future.wait(flutterGetDirs.reversed.map(flutterPackagesGet));
 
   await format();
   await cleanUp();
