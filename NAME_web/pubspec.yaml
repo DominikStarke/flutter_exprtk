@@ -1,0 +1,27 @@
+name: NAME_web
+description: Web implementation of the NAME plugin.
+repository: GITHUB/tree/master/NAME_web
+version: VERSION
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  NAME_platform_interface: ^VERSION
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: NAME
+    platforms:
+      web:
+        pluginClass: CLASSWeb
+        fileName: NAME_web.dart
