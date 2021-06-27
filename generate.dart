@@ -96,6 +96,7 @@ Future<void> main(List<String> args) async {
   if (windows) {
     platforms.add('Windows');
   }
+  List<Directory> flutterGetDirs = [];
   for (String platform in platforms) {
     String platformLower = platform.toLowerCase();
     Directory directory = await Directory.current
@@ -123,6 +124,7 @@ Future<void> main(List<String> args) async {
       }
     }
     await flutterCreatePlugin(directory, platform, bundle);
+    flutterGetDirs.add(directory);
   }
   Directory interfaceDirectory =
       new Directory(Directory.current.path + '/NAME_platform_interface');
@@ -144,6 +146,7 @@ Future<void> main(List<String> args) async {
       }
     }
   }
+  flutterGetDirs.add(interfaceDirectory);
 
   Directory mainDirectory = new Directory(Directory.current.path + '/NAME');
   mainDirectory = await mainDirectory.rename(pluginName);
@@ -160,7 +163,23 @@ Future<void> main(List<String> args) async {
       }
     }
   }
+  flutterGetDirs.add(mainDirectory);
+  await flutterCreatePackage(mainDirectory);
+
+  // await Future.wait(flutterGetDirs.reversed.map(flutterPackagesGet));
+
+  await format();
   await cleanUp();
+}
+
+Future<void> flutterPackagesGet(Directory dir) async {
+  await Process.run('flutter', ['packages', 'get'],
+      workingDirectory: dir.absolute.path, runInShell: true);
+}
+
+Future<void> format() async {
+  await Process.run('dartfmt', ['-w', '.'],
+      workingDirectory: Directory.current.absolute.path, runInShell: true);
 }
 
 Future<void> flutterCreatePlugin(
@@ -178,7 +197,6 @@ Future<void> flutterCreatePlugin(
       ],
       runInShell: true,
       workingDirectory: dir.absolute.path);
-  await new Directory(dir.path + '/example').delete(recursive: true);
   await new Directory(dir.path + '/test').delete(recursive: true);
   if (platform == 'web') {
     File f = await new Directory(dir.path + '/lib')
@@ -188,6 +206,12 @@ Future<void> flutterCreatePlugin(
         .first;
     await f.delete();
   }
+}
+
+Future<void> flutterCreatePackage(Directory dir) async {
+  await Process.run('flutter', ['create', '--template=package', '.'],
+      runInShell: true, workingDirectory: dir.absolute.path);
+  await new Directory(dir.path + '/test').delete(recursive: true);
 }
 
 String entityName(FileSystemEntity entity) {
