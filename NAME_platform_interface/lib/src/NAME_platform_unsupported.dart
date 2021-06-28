@@ -6,7 +6,7 @@ const String _not_supported_text = 'This platform is not supported!';
 class CLASSPlatformUnsupported extends CLASSPlatform {
   /// Always throws an [UnsupportedError].
   @override
-  void everyEethod() {
+  void everyMethod() {
     throw new UnsupportedError(_not_supported_text);
   }
 }

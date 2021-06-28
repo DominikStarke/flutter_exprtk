@@ -8,7 +8,7 @@ Future<void> main(List<String> args) async {
   String pluginName = args[0];
   print('Plugin name: $pluginName');
   String classCase = toClassCase(pluginName);
-  print('Class name; $classCase');
+  print('Class name: $classCase');
   String bundle = args[1];
   print('Bundle: $bundle');
   String version = args[2];
@@ -110,7 +110,8 @@ Future<void> main(List<String> args) async {
     await licenseTemplate.copy(directory.path + '/LICENSE');
     File platformReadme =
         await readmeTemplate.copy(directory.path + '/README.md');
-    await rewriteReadme(platformReadme, platform, version, classCase);
+    await rewriteReadme(
+        platformReadme, pluginName, platform, version, classCase);
     File platformChangelog =
         await changelogTemplate.copy(directory.path + '/CHANGELOG.md');
     await rewriteChangelog(platformChangelog, version);
@@ -237,11 +238,12 @@ String capitalize(String s) {
   }
 }
 
-Future<void> rewriteReadme(
-    File readme, String platform, String version, String className) async {
+Future<void> rewriteReadme(File readme, String name, String platform,
+    String version, String className) async {
   String underscorePlatform = '_' + platform.toLowerCase();
   String content = await readme.readAsString();
   content = content
+      .replaceAll('NAME', name)
       .replaceAll('_PLATFORM', underscorePlatform)
       .replaceAll('PLATFORM', platform)
       .replaceAll('VERSION', version)
