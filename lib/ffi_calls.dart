@@ -38,7 +38,7 @@ class NativeMidi {
 
     final DynamicLibrary nativeMidiLib = 
         Platform.isAndroid ? DynamicLibrary.open("libflutter_exprtk.so")
-      : Platform.isWindows ? DynamicLibrary.open("flutter_exprtk.dll")
+      : Platform.isWindows ? DynamicLibrary.open("flutter_exprtk_plugin.dll")
       : DynamicLibrary.process();
 
     _newExpression = nativeMidiLib

@@ -1,5 +1,7 @@
 .DS_Store
 .dart_tool/
+.fvm
+.idea
 
 .packages
 .pub/
@@ -8,5 +10,3 @@ build/
 
 android/.cxx
 
-.fvm
-.idea
