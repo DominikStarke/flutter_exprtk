@@ -25,5 +25,4 @@ A new flutter plugin project.
     sp.source_files = 'Classes/flutter_exprtk.cpp', 'Classes/FlutterExprtkPlugin.swift'
     sp.compiler_flags = '-x objective-c++'
   end
-
 end
