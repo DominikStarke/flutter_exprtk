@@ -5,7 +5,13 @@ ffi wrapper for exprtk math expression parser
 See https://github.com/ArashPartow/exprtk for details
 
 ## To install
-No special requirements
+    dependencies:
+    flutter:
+        sdk: flutter
+
+    flutter_exprtk:
+        git:
+            url: git@github.com:DominikStarke/flutter_exprtk.git
 
 
 ## Getting Started
