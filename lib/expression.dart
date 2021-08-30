@@ -24,8 +24,8 @@ class Expression {
     required Map<String, double> variables,
     Map<String, double>? constants
   }) : this._variables = variables, this._constants = constants {
-    NativeMidi.init();
-    _expression = NativeMidi.newExpression(
+    NativeExpression.init();
+    _expression = NativeExpression.newExpression(
       expression: expression,
       variables: _variables,
       constants: _constants
@@ -33,7 +33,7 @@ class Expression {
   }
 
   /// Returns the calculated value
-  get value => NativeMidi.getValue(_expression);
+  get value => NativeExpression.getValue(_expression);
 
   /// Set variable value
   operator []=(String variableName, double variableValue) {

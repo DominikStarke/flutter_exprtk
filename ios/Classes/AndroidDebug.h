@@ -22,7 +22,7 @@
 #if !defined(NDEBUG)
 
 #if !defined(LOG_TAG)
-#define LOG_TAG "NATIVE-MIDI"
+#define LOG_TAG "NATIVE-EXPRESSION"
 #endif
 
 #define LOGV(...) \

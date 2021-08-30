@@ -30,7 +30,7 @@ typedef NewExpression = void Function(Pointer<ExpressionStruct>);
 typedef GetValueImpl = Float Function(Pointer<ExpressionStruct>);
 typedef GetValue = double Function(Pointer<ExpressionStruct>);
 
-class NativeMidi {
+class NativeExpression {
   static bool _initialized = false;
   static late final NewExpression _newExpression;
   static late final GetValue getValue;
@@ -38,16 +38,16 @@ class NativeMidi {
   static init() {
     if(_initialized) return;
 
-    final DynamicLibrary nativeMidiLib = 
+    final DynamicLibrary expressionLib = 
         Platform.isAndroid ? DynamicLibrary.open("libflutter_exprtk.so")
       : Platform.isWindows ? DynamicLibrary.open("flutter_exprtk_plugin.dll")
       : DynamicLibrary.process();
 
-    _newExpression = nativeMidiLib
+    _newExpression = expressionLib
       .lookup<NativeFunction<NewExpressionImpl>>("new_expression")
       .asFunction();
 
-    getValue = nativeMidiLib
+    getValue = expressionLib
       .lookup<NativeFunction<GetValueImpl>>("get_value")
       .asFunction();
     
