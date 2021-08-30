@@ -36,15 +36,18 @@ class Expression {
   get value => NativeExpression.getValue(_expression);
 
   /// Set variable value
+  /// Fixme: using a std::ordered_map and introducing a cpp setter function instead of this should boost performance and is more transparent
   operator []=(String variableName, double variableValue) {
-    final numVariables = _expression.ref.numVariables!;
-    for(int i = 0; i < numVariables; i++) {
-      if(_expression.ref.variables!.elementAt(i).value.ref.name!.toDartString() == variableName) {
-        _expression.ref.variables!.elementAt(i).value.ref.value = variableValue;
-        return;
-      }
+    if(_variables.containsKey(variableName)) {
+      int i = 0;
+      _variables[variableName] = variableValue;
+      _variables.forEach((k, v) {
+        _expression.ref.variables!.elementAt(i).value.ref.value = v;
+        i++;
+      });
+    } else {
+      throw 'Variable "$variableName" not found.';
     }
-    throw 'Variable "$variableName" not found.';
   }
 
   /// Get variable value
