@@ -42,4 +42,4 @@ More complex example:
 ## Limitations
 Only works with doubles, not vectors etc.
 
-Currently only supports Android
+Currently only supports Android and MacOS
