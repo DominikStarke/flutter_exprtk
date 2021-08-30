@@ -31,11 +31,11 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 28
+        minSdkVersion 16
         targetSdkVersion 29
         externalNativeBuild {
             cmake {
-                arguments "-DANDROID_PLATFORM=android-29",
+                arguments "-DANDROID_PLATFORM=android-16",
                           "-DANDROID_STL=c++_static"
             }
         }
