@@ -24,3 +24,5 @@ flutter:
         pluginClass: FlutterExprtkPlugin
       ios:
         pluginClass: FlutterExprtkPlugin
+      macos:
+        pluginClass: FlutterExprtkPlugin
