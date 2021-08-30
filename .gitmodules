@@ -1,0 +1,3 @@
+[submodule "ios/Classes/ext/exprtk"]
+	path = ios/Classes/ext/exprtk
+	url = https://github.com/ArashPartow/exprtk.git
