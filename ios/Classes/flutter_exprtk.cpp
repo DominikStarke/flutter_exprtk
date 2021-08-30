@@ -22,6 +22,7 @@ struct Expression {
     Variable** constants;
     int numConstants;
     double result;
+    uint8_t isValid;
     expression_t* exprtk;
 };
 
@@ -46,7 +47,12 @@ EXTERNC void new_expression(Expression* exp) {
     expression->register_symbol_table(symbol_table);
 
     parser_t parser;
-    parser.compile(expression_string, *expression);
+
+    exp->isValid = true;
+    if (!parser.compile(expression_string, *expression))
+    {
+        exp->isValid = false;
+    }
 
     exp->exprtk = expression;
 }

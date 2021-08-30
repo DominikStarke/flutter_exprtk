@@ -19,6 +19,8 @@ class ExpressionStruct extends Struct {
   int? numConstants;
   @Double()
   double? result;
+  @Uint8()
+  int? isValid;
   Pointer? exprtk;
 }
 
@@ -92,6 +94,9 @@ class NativeMidi {
     }
 
     _newExpression(pExpression);
+    if(pExpression.ref.isValid == 0) {
+      throw 'Invalid expression';
+    }
 
     return pExpression;
   }
