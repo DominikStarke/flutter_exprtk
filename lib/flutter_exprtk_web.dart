@@ -1,44 +1,67 @@
-import 'dart:async';
-// In order to *not* need this ignore, consider extracting the "web" version
-// of your plugin as a separate package, instead of inlining it in the same
-// package as the core of your plugin.
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html show window;
+import 'package:flutter_exprtk/js_calls.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter_exprtk/flutter_exprtk.dart';
 
-import 'package:flutter/services.dart';
-// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+class FlutterExprtkWeb implements Expression {
+  static void registerWith(Registrar registrar) {}
+  late final int _pExpression;
+  late final Map<String, int> _variableNames;
 
-/// A web implementation of the FlutterExprtk plugin.
-class FlutterExprtkWeb {
-  // static void registerWith(Registrar registrar) {
-  //   final MethodChannel channel = MethodChannel(
-  //     'flutter_exprtk',
-  //     const StandardMethodCodec(),
-  //     registrar,
-  //   );
+  final Map<String, double> _variables;
+  final Map<String, double>? _constants;
 
-  //   final pluginInstance = FlutterExprtkWeb();
-  //   channel.setMethodCallHandler(pluginInstance.handleMethodCall);
-  // }
+  FlutterExprtkWeb(
+      {required expression,
+      required Map<String, double> variables,
+      Map<String, double>? constants})
+      : this._variables = variables,
+        this._constants = constants {
+    WASMExpression.init();
+    _variableNames = variables.map((name, value) =>
+        MapEntry(name, WASMExpression.stringToCharArray(name)));
+    _pExpression = WASMExpression.newExpression(
+        expression: expression, variables: _variables, constants: _constants);
 
-  /// Handles method calls over the MethodChannel of this plugin.
-  /// Note: Check the "federated" architecture for a new way of doing this:
-  /// https://flutter.dev/go/federated-plugins
-  Future<dynamic> handleMethodCall(MethodCall call) async {
-    switch (call.method) {
-      case 'getPlatformVersion':
-        return getPlatformVersion();
-      default:
-        throw PlatformException(
-          code: 'Unimplemented',
-          details: 'flutter_exprtk for web doesn\'t implement \'${call.method}\'',
-        );
+    if (WASMExpression.isValid.apply([_pExpression]) == 0) {
+      clear();
+      throw InvalidExpressionException();
     }
   }
 
-  /// Returns a [String] containing the version of the platform.
-  Future<String> getPlatformVersion() {
-    final version = html.window.navigator.userAgent;
-    return Future.value(version);
+  @override
+  void operator []=(String variableName, double variableValue) {
+    final name = _variableNames[variableName];
+    if (name != null) {
+      WASMExpression.setVar.apply([name, variableValue, _pExpression]);
+    } else {
+      throw UninitializedVariableException();
+    }
   }
+
+  @override
+  operator [](String variableName) {
+    final name = _variableNames[variableName];
+    if (name != null) {
+      return WASMExpression.getVar.apply([name, _pExpression]);
+    } else {
+      throw UninitializedVariableException();
+    }
+  }
+
+  @override
+  clear() {
+    WASMExpression.destructExpression.apply([_pExpression]);
+  }
+
+  @override
+  double get value {
+    return WASMExpression.getResult.apply([_pExpression]);
+  } 
 }
+
+Expression getExpression(
+        {required expression,
+        required Map<String, double> variables,
+        Map<String, double>? constants}) =>
+    FlutterExprtkWeb(
+        expression: expression, variables: variables, constants: constants);

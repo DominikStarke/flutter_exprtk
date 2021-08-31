@@ -79,7 +79,7 @@ class NativeExpression {
 
   /// Return value from given native Expression
   /// Note: This shouldn't be called manually
-  static late final GetValue getValue;
+  static late final GetValue getResult;
 
   /// Set given variable for given native Expression
   /// Note: This shouldn't be called manually
@@ -124,7 +124,7 @@ class NativeExpression {
         .lookup<NativeFunction<ParseExpressionImpl>>("parse_expression")
         .asFunction();
 
-    getValue = expressionLib
+    getResult = expressionLib
         .lookup<NativeFunction<GetValueImpl>>("get_result")
         .asFunction();
 

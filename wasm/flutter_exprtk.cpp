@@ -1,7 +1,4 @@
 #include "ext/exprtk/exprtk.hpp"
-#include <iostream>
-
-
 
 #ifdef WIN32
 #define EXTERNC extern "C" __declspec( dllexport )
@@ -22,16 +19,11 @@ using pair_sd        = std::pair<std::string, double>;
 class Expression {
     public:
         Expression(std::string expression_string) {
-            std::cout << "New Expression" << std::endl;
             expression = expression_string;
         }
 
-        ~Expression() {
-            std::cout << "Destruct Expression" << std::endl;
-        }
-
         void parse_expression() {
-            isValid = true;
+            isValid = 1;
             map_sd::iterator it;
 
             for (it = variables.begin(); it != variables.end(); it++)
@@ -51,7 +43,7 @@ class Expression {
 
             if (!parser.compile(expression, exprtk))
             {
-                isValid = false;
+                isValid = 0;
             }
         }
 
@@ -79,14 +71,14 @@ class Expression {
             return exprtk.value();
         }
 
-        uint8_t is_valid() {
+        int is_valid() {
             return isValid;
         }
 
     private:
         std::string expression;
         double result = 0.0;
-        uint8_t isValid = false;
+        int isValid = 0;
 
         map_sd variables;
         map_sd constants;
@@ -115,7 +107,7 @@ EXTERNC double get_result(Expression* expression) {
     return expression->get_result();
 }
 
-EXTERNC uint8_t is_valid(Expression* expression) {
+EXTERNC int is_valid(Expression* expression) {
     return expression->is_valid();
 }
 
@@ -124,7 +116,6 @@ EXTERNC void parse_expression(Expression* expression) {
 }
 
 EXTERNC Expression* new_expression(const char* expression_string) {
-    std::cout << "EMS TEST" << std::endl;
     return new Expression(expression_string);
 }
 
