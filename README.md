@@ -14,11 +14,11 @@ Currently supports Android, MacOS, iOS and Windows
     flutter:
         sdk: flutter
 
-    flutter_exprtk: ^0.0.3
+    flutter_exprtk: ^0.0.5
 
 Import the library:
 
-    import 'package:flutter_exprtk/expression.dart';
+    import 'package:flutter_exprtk/flutter_exprtk.dart';
 
 
 ## Getting Started
