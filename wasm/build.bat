@@ -1,0 +1,1 @@
+emcc flutter_exprtk.cpp -s WASM=1 -o hello.html --shell-file shell_minimal.html  -s "EXPORTED_RUNTIME_METHODS=['ccall']"
