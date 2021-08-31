@@ -1,6 +1,7 @@
 ## 0.0.4
 
-* Update License
+* Moved lib to flutter_exptrk.dart
+* Added some documentation
 * Update Readme
 
 ## 0.0.3
