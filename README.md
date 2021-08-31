@@ -4,6 +4,11 @@ ffi wrapper for exprtk math expression parser
 
 See https://github.com/ArashPartow/exprtk for details
 
+## Limitations
+Only works with doubles, not vectors etc.
+
+Currently supports Android, MacOS, iOS and Windows
+
 ## To install
     dependencies:
     flutter:
@@ -102,7 +107,3 @@ If you try to set a variable which hasn't been initialized an "UninitializedVari
         // ... handle exception
     }
 
-## Limitations
-Only works with doubles, not vectors etc.
-
-Currently supports Android, MacOS, iOS and Windows
