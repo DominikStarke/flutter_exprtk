@@ -13,6 +13,10 @@ See https://github.com/ArashPartow/exprtk for details
         git:
             url: git@github.com:DominikStarke/flutter_exprtk.git
 
+Import the library:
+
+    import 'package:flutter_exprtk/expression.dart';
+
 
 ## Getting Started
     // Create a new expression
@@ -73,6 +77,30 @@ In a separate Isolate:
     // Then run it for example with compute from flutter:foundation:
     final results = await compute(computeExpression, null);
     print("Results $results");
+
+## Handling errors
+
+new Expression() will throw an "InvalidExpressionException" if the expression isn't valid.
+
+If you try to set a variable which hasn't been initialized an "UninitializedVariableException" will be thrown:
+
+    try {
+        final exp = Expression(
+            expression: "///////", // will cause an InvalidExpressionException
+            variables: {}
+        );
+
+        final exp = Expression(
+            expression: "a + b",
+            variables: { "c": 0 } // will cause an UninitializedVariableException
+        );
+        exp["d"] = 0; // will also cause an UninitializedVariableException
+
+    } on InvalidExpressionException {
+        // ... handle exception
+    } on UninitializedVariableException {
+        // ... handle exception
+    }
 
 ## Limitations
 Only works with doubles, not vectors etc.
