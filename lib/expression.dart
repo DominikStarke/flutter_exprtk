@@ -44,8 +44,9 @@ class Expression {
       variables: _variables,
       constants: _constants
     );
-    
+
     if(NativeExpression.isValid(_pExpression) == 0) {
+      clear();
       throw InvalidExpressionException();
     }
   }
