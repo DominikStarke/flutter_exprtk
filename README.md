@@ -32,6 +32,9 @@ See https://github.com/ArashPartow/exprtk for details
     exp["b] = 50
     print(exp.value); // -> 2
 
+    // Call clear to free up memory
+    expression.clear();
+
 
 More complex example:
 
@@ -44,6 +47,8 @@ More complex example:
         exp2["x"] = x;
         print("${exp2.value}");
     }
+    // Call clear to free up memory
+    exp2.clear();
 
 ## Limitations
 Only works with doubles, not vectors etc.

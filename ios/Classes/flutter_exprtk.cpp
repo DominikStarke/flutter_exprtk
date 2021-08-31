@@ -1,5 +1,5 @@
 #include "ext/exprtk/exprtk.hpp"
-#include <map>
+#include <iostream>
 
 #ifdef WIN32
 #define EXTERNC extern "C" __declspec( dllexport )
@@ -15,129 +15,115 @@ using map_sd = std::map<std::string, double>;
 using pair_sd = std::pair<std::string, double>;
 using il_sd  = std::initializer_list<map_sd::value_type>;
 
-struct Variable {
-    char* name;
-    double value;
-};
-
-struct Expression {
-    char* expression;
-    Variable** variables;
-    int numVariables;
-    Variable** constants;
-    int numConstants;
-    double result;
-    uint8_t isValid;
-    expression_t* exprtk;
-};
-
-class __Expression {
+class Expression {
     public:
-        std::string expression;
-        double result;
-        uint8_t isValid;
+        Expression(std::string expression_string) {
+            std::cout << "New Expression" << std::endl;
+            expression = expression_string;
+        }
 
-        std::shared_ptr<map_sd> variables;
-        std::shared_ptr<map_sd> constants;
-        std::shared_ptr<symbol_table_t> symbol_table;
-        std::shared_ptr<parser_t> parser;
-        std::shared_ptr<expression_t> exprtk;
+        ~Expression() {
+            std::cout << "Destruct Expression" << std::endl;
+        }
+
+        void parse_expression() {
+            isValid = true;
+            map_sd::iterator it;
+
+            for (it = variables.begin(); it != variables.end(); it++)
+            {
+                symbol_table.add_variable(
+                        it->first, it->second);
+            }
+
+            for (it = constants.begin(); it != constants.end(); it++)
+            {
+                symbol_table.add_constant(
+                        it->first, it->second);
+            }
+
+            symbol_table.add_constants();
+            exprtk.register_symbol_table(symbol_table);
+
+            if (!parser.compile(expression, exprtk))
+            {
+                isValid = false;
+            }
+        }
+
+        void set_var(const char* name, double value) {
+            auto res = variables.insert(
+                pair_sd(name, value));
+            if (!res.second)
+                res.first->second = value;
+        }
+
+        void set_const(const char* name, double value) {
+            auto res = constants.insert(
+                    pair_sd(name, value));
+        }
+
+        double get_var(const char* name) {
+            return variables.at(name);
+        }
+
+        double get_const(const char* name) {
+            return constants.at(name);
+        }
+
+        double get_result() {
+            return exprtk.value();
+        }
+
+        uint8_t is_valid() {
+            return isValid;
+        }
+
+    private:
+        std::string expression;
+        double result = 0.0;
+        uint8_t isValid = false;
+
+        map_sd variables;
+        map_sd constants;
+        symbol_table_t symbol_table;
+        parser_t parser;
+        expression_t exprtk;
 };
 
-EXTERNC void set_var(char* name, double value, std::shared_ptr<__Expression> expression) {
-    auto res = expression->variables->insert(
-        pair_sd(name, value));
-    if (!res.second)
-        res.first->second = value;
+EXTERNC void set_var(const char* name, double value, Expression* expression) {
+    expression->set_var(name, value);
 }
 
-EXTERNC void set_const(char* name, double value, std::shared_ptr<__Expression> expression) {
-    auto res = expression->constants->insert(
-            pair_sd(name, value));
+EXTERNC void set_const(const char* name, double value, Expression* expression) {
+    expression->set_const(name, value);
 }
 
-EXTERNC double get_var(char* name, std::shared_ptr<__Expression> expression) {
-    return expression->variables->at(name);
+EXTERNC double get_var(const char* name, Expression* expression) {
+    return expression->get_var(name);
 }
 
-EXTERNC double get_const(char* name, std::shared_ptr<__Expression> expression) {
-    return expression->constants->at(name);
+EXTERNC double get_const(const char* name, Expression* expression) {
+    return expression->get_const(name);
 }
 
-EXTERNC void parse_expression(std::shared_ptr<__Expression> expression) {
-    expression->isValid = true;
-    map_sd::iterator it;
-
-    for (it = expression->variables->begin(); it != expression->variables->end(); it++)
-    {
-        expression->symbol_table->add_variable(
-                it->first, it->second);
-    }
-
-    for (it = expression->constants->begin(); it != expression->constants->end(); it++)
-    {
-        expression->symbol_table->add_constant(
-                it->first, it->second);
-    }
-
-    expression->symbol_table->add_constants();
-    expression->exprtk->register_symbol_table(
-        *expression->symbol_table);
-
-    if (!expression->parser->compile(expression->expression, *expression->exprtk))
-    {
-        expression->isValid = false;
-    }
+EXTERNC double get_result(Expression* expression) {
+    return expression->get_result();
 }
 
-EXTERNC void new_expression(Expression* exp) {
-
-    auto result = std::make_shared<__Expression>();
-    result->variables = std::make_shared<map_sd>();
-    result->constants = std::make_shared<map_sd>();
-    result->symbol_table = std::make_shared<symbol_table_t>();
-    result->parser = std::make_shared<parser_t>();
-    result->exprtk = std::make_shared<expression_t>();
-
-    // result->expression = expression_string;
-    // set_var(exp->variables[i]->name, exp->variables[i]->value, result);
-    // parse_expression(result);
-    // auto val = result->exprtk->value();
-
-    std::string expression_string = exp->expression;
-
-    symbol_table_t symbol_table;
-
-    for(int i=0; i<exp->numVariables; i++) {
-
-        symbol_table.add_variable(
-                exp->variables[i]->name, exp->variables[i]->value);
-    }
-
-    for(int i=0; i<exp->numConstants; i++) {
-        symbol_table.add_constant(
-                exp->constants[i]->name, exp->constants[i]->value);
-    }
-
-
-
-    symbol_table.add_constants();
-
-    expression_t* expression = new expression_t();
-    expression->register_symbol_table(symbol_table);
-
-    parser_t parser;
-
-    exp->isValid = true;
-    if (!parser.compile(expression_string, *expression))
-    {
-        exp->isValid = false;
-    }
-
-    exp->exprtk = expression;
+EXTERNC uint8_t is_valid(Expression* expression) {
+    return expression->is_valid();
 }
 
-EXTERNC double get_value(Expression* exp) {
-    auto value = exp->exprtk->value();
-    return value;
+EXTERNC void parse_expression(Expression* expression) {
+    expression->parse_expression();
 }
+
+EXTERNC Expression* new_expression(const char* expression_string) {
+    return new Expression(expression_string);
+}
+
+EXTERNC void destruct_expression(Expression* expression) {
+    delete expression;
+}
+

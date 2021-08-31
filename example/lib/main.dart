@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_exprtk/expression.dart';
 
@@ -33,14 +35,12 @@ class _MyAppState extends State<MyApp> {
                 variables: { "x": 0 }
               );
 
-              final stopwatch = Stopwatch()..start();
               for (double x = -5; x <= 5; x += 0.001)
               {
                 exp2["x"] = x;
-                exp2.value;
-                // print("${exp2.value}");
+                print("$x ${exp2.value}");
               }
-              print('Execution took ${stopwatch.elapsed.inMicroseconds} microseconds');
+              exp2.clear();
 
             },
             child: Text("Run"),

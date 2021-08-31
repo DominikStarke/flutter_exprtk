@@ -3,37 +3,38 @@ import 'package:ffi/ffi.dart';
 import 'dart:ffi';
 import 'dart:io';
 
-class Variable extends Struct {
-  Pointer<Utf8>? name;
-  @Double()
-  double? value;
-}
+typedef NewExpressionImpl = Pointer Function(Pointer<Utf8>);
+typedef NewExpression = Pointer Function(Pointer<Utf8>);
 
-class ExpressionStruct extends Struct {
-  Pointer<Utf8>? expression;
-  Pointer<Pointer<Variable>>? variables;
-  @Int32()
-  int? numVariables;
-  Pointer<Pointer<Variable>>? constants;
-  @Int32()
-  int? numConstants;
-  @Double()
-  double? result;
-  @Uint8()
-  int? isValid;
-  Pointer? exprtk;
-}
+typedef DestructExpressionImpl = Pointer Function(Pointer);
+typedef DestructExpression = Pointer Function(Pointer);
 
-typedef NewExpressionImpl = Void Function(Pointer<ExpressionStruct>);
-typedef NewExpression = void Function(Pointer<ExpressionStruct>);
+typedef ParseExpressionImpl = Pointer Function(Pointer);
+typedef ParseExpression = Pointer Function(Pointer);
 
-typedef GetValueImpl = Float Function(Pointer<ExpressionStruct>);
-typedef GetValue = double Function(Pointer<ExpressionStruct>);
+typedef GetValueImpl = Float Function(Pointer);
+typedef GetValue = double Function(Pointer);
+
+typedef SetVarOrConstImpl = Void Function(Pointer<Utf8>, Double, Pointer);
+typedef SetVarOrConst = void Function(Pointer<Utf8>, double, Pointer);
+
+typedef GetVarOrConstImpl = Void Function(Pointer<Utf8>, Pointer);
+typedef GetVarOrConst = void Function(Pointer<Utf8>, Pointer);
+
+typedef IsValidImpl = Uint8 Function(Pointer);
+typedef IsValid = int Function(Pointer);
 
 class NativeExpression {
   static bool _initialized = false;
   static late final NewExpression _newExpression;
+  static late final ParseExpression _parseExpression;
+  static late final DestructExpression destructExpression;
   static late final GetValue getValue;
+  static late final SetVarOrConst setVar;
+  static late final SetVarOrConst setConst;
+  static late final GetVarOrConst getVar;
+  static late final GetVarOrConst getConst;
+  static late final IsValid isValid;
 
   static init() {
     if(_initialized) return;
@@ -47,54 +48,59 @@ class NativeExpression {
       .lookup<NativeFunction<NewExpressionImpl>>("new_expression")
       .asFunction();
 
+    destructExpression = expressionLib
+      .lookup<NativeFunction<DestructExpressionImpl>>("destruct_expression")
+      .asFunction();
+
+    _parseExpression = expressionLib
+      .lookup<NativeFunction<ParseExpressionImpl>>("parse_expression")
+      .asFunction();
+
     getValue = expressionLib
-      .lookup<NativeFunction<GetValueImpl>>("get_value")
+      .lookup<NativeFunction<GetValueImpl>>("get_result")
+      .asFunction();
+
+    setVar = expressionLib
+      .lookup<NativeFunction<SetVarOrConstImpl>>("set_var")
+      .asFunction();
+
+    setConst = expressionLib
+      .lookup<NativeFunction<SetVarOrConstImpl>>("set_const")
+      .asFunction();
+
+    getVar = expressionLib
+      .lookup<NativeFunction<GetVarOrConstImpl>>("get_var")
+      .asFunction();
+
+    getConst = expressionLib
+      .lookup<NativeFunction<GetVarOrConstImpl>>("get_const")
+      .asFunction();
+
+    isValid = expressionLib
+      .lookup<NativeFunction<IsValidImpl>>("is_valid")
       .asFunction();
     
     _initialized = true;
   }
 
-  static Pointer<ExpressionStruct> newExpression({
+  static Pointer newExpression({
     required String expression,
     required Map<String, double> variables,
     Map<String, double>? constants
   }) {
+    final pExpression = _newExpression(expression.toNativeUtf8());
 
-    final pExpression = malloc<ExpressionStruct>();
-    pExpression.ref.expression = expression.toNativeUtf8();
-    pExpression.ref.variables = malloc.allocate<Pointer<Variable>>(variables.length);
+    variables.forEach((name, value) =>
+      setVar(name.toNativeUtf8(), value, pExpression));
 
-    pExpression.ref.numVariables = variables.length;
-    int varNum = 0;
-    variables.forEach((name, value) {
-      final pVariable = malloc<Variable>();
+    constants?.forEach((name, value) =>
+      setConst(name.toNativeUtf8(), value, pExpression));
 
-      pVariable.ref.name = name.toNativeUtf8();
-      pVariable.ref.value = value;
+    _parseExpression(pExpression);
 
-      pExpression.ref.variables!.elementAt(varNum).value = pVariable;
-      varNum++;
-    });
-
-
-    pExpression.ref.numConstants = constants?.length ?? 0;
-    if(constants != null) {
-      pExpression.ref.variables = malloc.allocate<Pointer<Variable>>(constants.length);
-      
-      int constNum = 0;
-      constants.forEach((name, value) {
-        final pConstant = malloc<Variable>();
-
-        pConstant.ref.name = name.toNativeUtf8();
-        pConstant.ref.value = value;
-
-        pExpression.ref.constants!.elementAt(constNum).value = pConstant;
-        constNum++;
-      });
-    }
-
-    _newExpression(pExpression);
-    if(pExpression.ref.isValid == 0) {
+    if(isValid(pExpression) == 1) {
+      print(getValue(pExpression));
+    } else {
       throw 'Invalid expression';
     }
 

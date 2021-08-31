@@ -8,7 +8,8 @@ class Expression {
   final Map<String, double> _variables;
   final Map<String, double>? _constants;
 
-  late final Pointer<ExpressionStruct> _expression;
+  late final Map<String, Pointer<Utf8>> _variableNames;
+  late final Pointer _pExpression;
 
   /// Create a new math expression
   /// for example:
@@ -18,14 +19,19 @@ class Expression {
   ///   variables: { "a": 4, "b": 2 }
   /// );
   /// print("${expression.value}"); // -> 4 / 2 = 2
+  /// // Call clear to free up memory
+  /// expression.clear();
   /// ```
   Expression({
     required this.expression,
     required Map<String, double> variables,
     Map<String, double>? constants
   }) : this._variables = variables, this._constants = constants {
+    _variableNames = variables.map((name, value)
+      => MapEntry(name, name.toNativeUtf8()));
+
     NativeExpression.init();
-    _expression = NativeExpression.newExpression(
+    _pExpression = NativeExpression.newExpression(
       expression: expression,
       variables: _variables,
       constants: _constants
@@ -33,32 +39,29 @@ class Expression {
   }
 
   /// Returns the calculated value
-  get value => NativeExpression.getValue(_expression);
+  get value => NativeExpression.getValue(_pExpression);
 
   /// Set variable value
-  /// Fixme: using a std::ordered_map and introducing a cpp setter function instead of this should boost performance and is more transparent
   operator []=(String variableName, double variableValue) {
-    if(_variables.containsKey(variableName)) {
-      int i = 0;
-      _variables[variableName] = variableValue;
-      _variables.forEach((k, v) {
-        _expression.ref.variables!.elementAt(i).value.ref.value = v;
-        i++;
-      });
+    final name = _variableNames[variableName];
+    if(name != null) {
+      NativeExpression.setVar(name, variableValue, _pExpression);
     } else {
-      throw 'Variable "$variableName" not found.';
+      throw 'Cannot set uninitialized variable';
     }
   }
 
   /// Get variable value
   operator [](String variableName) {
-    final numVariables = _expression.ref.numVariables!;
-    for(int i = 0; i < numVariables; i++) {
-      if(_expression.ref.variables!.elementAt(i).value.ref.name!.toDartString() == variableName) {
-        return _expression.ref.variables!.elementAt(i).value.ref.value!;
-      }
-    }
-    throw 'Variable "$variableName" not found.';
+    return NativeExpression.getVar(variableName.toNativeUtf8(), _pExpression);
+  }
+
+  /// Free up memory
+  clear() {
+    _variableNames.forEach((key, value) {
+      malloc.free(value);
+    });
+    NativeExpression.destructExpression(_pExpression);
   }
 }
 
