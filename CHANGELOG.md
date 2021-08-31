@@ -1,3 +1,13 @@
+## 0.0.4
+
+* Update License
+* Update Readme
+
+## 0.0.3
+
+* Update License
+* Update Readme
+
 ## 0.0.2
 
 * Floats aren't Doubles d'oh!

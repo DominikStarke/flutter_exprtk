@@ -14,9 +14,7 @@ Currently supports Android, MacOS, iOS and Windows
     flutter:
         sdk: flutter
 
-    flutter_exprtk:
-        git:
-            url: git@github.com:DominikStarke/flutter_exprtk.git
+    flutter_exprtk: ^0.0.3
 
 Import the library:
 
