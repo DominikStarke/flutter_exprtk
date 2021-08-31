@@ -7,13 +7,11 @@
 #define EXTERNC extern "C" __attribute__((visibility("default"))) __attribute__((used))
 #endif
 
-typedef exprtk::symbol_table<double> symbol_table_t;
-typedef exprtk::expression<double>   expression_t;
-typedef exprtk::parser<double>       parser_t;
-
-using map_sd = std::map<std::string, double>;
-using pair_sd = std::pair<std::string, double>;
-using il_sd  = std::initializer_list<map_sd::value_type>;
+using symbol_table_t = exprtk::symbol_table<double>;
+using expression_t   = exprtk::expression<double>;
+using parser_t       = exprtk::parser<double>;
+using map_sd         = std::map<std::string, double>;
+using pair_sd        = std::pair<std::string, double>;
 
 class Expression {
     public:
