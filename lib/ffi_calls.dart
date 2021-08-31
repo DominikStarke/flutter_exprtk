@@ -98,12 +98,6 @@ class NativeExpression {
 
     _parseExpression(pExpression);
 
-    if(isValid(pExpression) == 1) {
-      print(getValue(pExpression));
-    } else {
-      throw 'Invalid expression';
-    }
-
     return pExpression;
   }
 

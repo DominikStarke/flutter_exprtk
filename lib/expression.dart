@@ -3,6 +3,14 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter_exprtk/ffi_calls.dart';
 import 'dart:ffi';
 
+class UninitializedVariableException implements Exception {
+  String cause = "Cannot set an uninitialized variable";
+}
+
+class InvalidExpressionException implements Exception {
+  String cause = "Invalid expression";
+}
+
 class Expression {
   final String expression;
   final Map<String, double> _variables;
@@ -36,6 +44,10 @@ class Expression {
       variables: _variables,
       constants: _constants
     );
+    
+    if(NativeExpression.isValid(_pExpression) == 0) {
+      throw InvalidExpressionException();
+    }
   }
 
   /// Returns the calculated value
@@ -47,7 +59,7 @@ class Expression {
     if(name != null) {
       NativeExpression.setVar(name, variableValue, _pExpression);
     } else {
-      throw 'Cannot set uninitialized variable';
+      throw UninitializedVariableException();
     }
   }
 
