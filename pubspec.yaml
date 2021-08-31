@@ -1,6 +1,6 @@
 name: flutter_exprtk
 description: flutter_exprtk is a FFI wrapper for the exptrk Mathematical Expression Toolkit Library
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/DominikStarke/flutter_exprtk
 
 environment:
