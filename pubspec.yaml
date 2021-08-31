@@ -23,7 +23,7 @@ flutter:
         package: com.dost.flutter_exprtk
         pluginClass: FlutterExprtkPlugin
       ios:
-        pluginClass: FlutterExprtkPlugin
+        pluginClass: SwiftFlutterExprtkPlugin
       macos:
         pluginClass: FlutterExprtkPlugin
       windows:
