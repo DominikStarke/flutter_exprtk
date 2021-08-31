@@ -38,7 +38,7 @@ Import the library:
     exp["a"] = 100
     print(exp.value); // -> 50
 
-    exp["b] = 50
+    exp["b"] = 50
     print(exp.value); // -> 2
 
     // Call clear to free up memory
