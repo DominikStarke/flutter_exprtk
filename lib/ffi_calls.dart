@@ -12,7 +12,7 @@ typedef DestructExpression = Pointer Function(Pointer);
 typedef ParseExpressionImpl = Pointer Function(Pointer);
 typedef ParseExpression = Pointer Function(Pointer);
 
-typedef GetValueImpl = Float Function(Pointer);
+typedef GetValueImpl = Double Function(Pointer);
 typedef GetValue = double Function(Pointer);
 
 typedef SetVarOrConstImpl = Void Function(Pointer<Utf8>, Double, Pointer);
