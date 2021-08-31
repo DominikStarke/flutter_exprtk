@@ -21,8 +21,4 @@ A new flutter plugin project.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
 
-  s.subspec 'flutter_exprtk' do |sp|
-    sp.source_files = 'Classes/flutter_exprtk.cpp', 'Classes/FlutterExprtkPlugin.swift'
-    sp.compiler_flags = '-x objective-c++'
-  end
 end
