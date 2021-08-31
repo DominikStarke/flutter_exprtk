@@ -1,3 +1,6 @@
+## 0.0.5
+* Update Readme
+
 ## 0.0.4
 
 * Moved lib to flutter_exptrk.dart
