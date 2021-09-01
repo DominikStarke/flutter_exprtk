@@ -7,19 +7,43 @@ See https://github.com/ArashPartow/exprtk for details
 ## Limitations
 Only works with doubles, not vectors etc.
 
-Currently supports Android, MacOS, iOS and Windows
+Currently supports Android, MacOS, iOS, Web and Windows
+
+
+
+
+
 
 ## To install
     dependencies:
-    flutter:
-        sdk: flutter
+        flutter:
+            sdk: flutter
+        flutter_web_plugins: # for web support
+            sdk: flutter     # for web support
 
-    flutter_exprtk: ^0.0.5
+        flutter_exprtk: ^0.0.6-dev.1
 
 Import the library:
 
     import 'package:flutter_exprtk/flutter_exprtk.dart';
 
+
+## Web Platform:
+Web is supported by a wasm module, which has to be included manually and will only work in release mode.
+
+You can find it in the git repository:
+
+https://github.com/DominikStarke/flutter_exprtk/tree/web/wasm
+
+* copy flutter_exprtk.wasm and flutter_exprtk.js to the root of your build output folder
+* add <script src="flutter_exprtk.js"></script> to the index.html
+
+if you want to compile the wasm module you can do so with emscripten:
+```
+emcc flutter_exprtk.cpp -s WASM=1 -o flutter_exptrk.js -s "EXPORTED_RUNTIME_METHODS=['cwrap', 'allocateUTF8OnStack']" -O3 -flto
+```
+
+Once you have everything set up start a "secure" webserver. The wasm directory holds a snakeoil cert and key for that purpose.
 
 ## Getting Started
     // Create a new expression
