@@ -65,10 +65,10 @@ packages:
   flutter_exprtk_platform_interface:
     dependency: "direct main"
     description:
-      path: "../flutter_exprtk_platform_interface"
-      relative: true
-    source: path
-    version: "0.0.7"
+      name: flutter_exprtk_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7-dev.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter

@@ -1,2 +1,2 @@
-[0.0.7]
-* Initial release in federated plugin structure
+[0.0.7-dev.1]
+* Initial release with federated plugin structure
