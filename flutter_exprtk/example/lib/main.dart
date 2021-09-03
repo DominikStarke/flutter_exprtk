@@ -20,26 +20,26 @@ Future<List<double>> computeExpression(dynamic param) async {
     }
     exp2.clear();
     return results;
-  } catch(e) {
+  } catch (e) {
     print(e.runtimeType);
   }
   return [];
 }
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 Future<String> loadAsset(BuildContext context) async {
-  final data = await rootBundle.loadString('packages/flutter_exprtk_web/assets/flutter_exprtk.js');
-
+  final data = await rootBundle
+      .loadString('packages/flutter_exprtk_web/assets/flutter_exprtk.js');
 
   return data;
 }
 
 class _MyAppState extends State<MyApp> {
   static Future<List<double>> computeExpression(dynamic param) async {
-
     try {
       final exp2 = Expression(
           expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       }
       exp2.clear();
       return results;
-    } catch(e) {
+    } catch (e) {
       print("ERROR : INVALID");
     }
     return [];
@@ -72,27 +72,26 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Expression plugin example'),
         ),
         body: Center(
-          child: OutlinedButton(
-            onPressed: () async {
-              
-              final exp2 = Expression(
-                  expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
-                  variables: {"x": 0});
-              final List<double> results = [];
+            child: OutlinedButton(
+          onPressed: () async {
+            final exp2 = Expression(
+                expression:
+                    "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
+                variables: {"x": 0});
+            final List<double> results = [];
 
-              for (double x = -5; x <= 5; x += 0.001) {
-                exp2["x"] = x;
-                results.add(exp2.value);
-              }
-              print(results);
-              // exp2.clear();
+            for (double x = -5; x <= 5; x += 0.001) {
+              exp2["x"] = x;
+              results.add(exp2.value);
+            }
+            print(results);
+            // exp2.clear();
 
-              // final results = await compute(computeExpression, null);
-              // print("Results $results");
-            },
-            child: Text("Run"),
-          )
-        ),
+            // final results = await compute(computeExpression, null);
+            // print("Results $results");
+          },
+          child: Text("Run"),
+        )),
       ),
     );
   }

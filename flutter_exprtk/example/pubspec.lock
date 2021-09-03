@@ -76,17 +76,10 @@ packages:
       relative: true
     source: path
     version: "0.0.7"
-  flutter_exprtk_android:
+  flutter_exprtk_native:
     dependency: transitive
     description:
-      path: "../../flutter_exprtk_android"
-      relative: true
-    source: path
-    version: "0.0.7"
-  flutter_exprtk_ios:
-    dependency: transitive
-    description:
-      path: "../../flutter_exprtk_ios"
+      path: "../../flutter_exprtk_native"
       relative: true
     source: path
     version: "0.0.7"
@@ -101,13 +94,6 @@ packages:
     dependency: transitive
     description:
       path: "../../flutter_exprtk_web"
-      relative: true
-    source: path
-    version: "0.0.7"
-  flutter_exprtk_windows:
-    dependency: transitive
-    description:
-      path: "../../flutter_exprtk_windows"
       relative: true
     source: path
     version: "0.0.7"

@@ -27,17 +27,10 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_exprtk_android:
+  flutter_exprtk_native:
     dependency: "direct main"
     description:
-      path: "../flutter_exprtk_android"
-      relative: true
-    source: path
-    version: "0.0.7"
-  flutter_exprtk_ios:
-    dependency: "direct main"
-    description:
-      path: "../flutter_exprtk_ios"
+      path: "../flutter_exprtk_native"
       relative: true
     source: path
     version: "0.0.7"
@@ -52,13 +45,6 @@ packages:
     dependency: "direct main"
     description:
       path: "../flutter_exprtk_web"
-      relative: true
-    source: path
-    version: "0.0.7"
-  flutter_exprtk_windows:
-    dependency: "direct main"
-    description:
-      path: "../flutter_exprtk_windows"
       relative: true
     source: path
     version: "0.0.7"

@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  flutter_exprtk_windows
+  flutter_exprtk_native
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

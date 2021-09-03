@@ -10,6 +10,42 @@ import 'dart:js' as js;
 class FlutterExprtkWeb extends FlutterExprtkPlatform {
   late final js.JsObject _module;
 
+  /// Return a Pointer to a new native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiNewExpression;
+
+  /// Parse given native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiParseExpression;
+
+  /// Destruct given native Expression, freeing memory
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiDestructExpression;
+
+  /// Return value from given native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiGetResult;
+
+  /// Set given variable for given native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiSetVar;
+
+  /// Set given const for given native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiSetConst;
+
+  /// Returns given variable from the native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiGetVar;
+
+  /// Returns given const from the native Expression
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiGetConst;
+
+  /// Checks whether given native Expression is valid
+  /// Note: This shouldn't be called manually
+  late final js.JsFunction _ffiIsValid;
+
   FlutterExprtkWeb() {
     asyncInit();
   }
@@ -24,52 +60,52 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
       print("EVENT $event");
       _module = js.context['Module'];
 
-      ffiNewExpression = _module
+      _ffiNewExpression = _module
         .callMethod('cwrap', ['new_expression', 'number', js.JsArray.from(['number'])]);
 
-      ffiDestructExpression = _module.callMethod('cwrap', [
+      _ffiDestructExpression = _module.callMethod('cwrap', [
         'destruct_expression',
         'void',
         js.JsArray.from(['number'])
       ]);
 
-      ffiParseExpression = _module.callMethod('cwrap', [
+      _ffiParseExpression = _module.callMethod('cwrap', [
         'parse_expression',
         'void',
         js.JsArray.from(['number'])
       ]);
 
-      ffiGetResult = _module.callMethod('cwrap', [
+      _ffiGetResult = _module.callMethod('cwrap', [
         'get_result',
         'number',
         js.JsArray.from(['number'])
       ]);
 
-      ffiSetVar = _module.callMethod('cwrap', [
+      _ffiSetVar = _module.callMethod('cwrap', [
         'set_var',
         'void',
         js.JsArray.from(['number', 'number'])
       ]);
 
-      ffiSetConst = _module.callMethod('cwrap', [
+      _ffiSetConst = _module.callMethod('cwrap', [
         'set_const',
         'void',
         js.JsArray.from(['number', 'number'])
       ]);
 
-      ffiGetVar = _module.callMethod('cwrap', [
+      _ffiGetVar = _module.callMethod('cwrap', [
         'get_var',
         'number',
         js.JsArray.from(['number', 'number'])
       ]);
 
-      ffiGetConst = _module.callMethod('cwrap', [
+      _ffiGetConst = _module.callMethod('cwrap', [
         'get_const',
         'number',
         js.JsArray.from(['number', 'number'])
       ]);
 
-      ffiIsValid = _module.callMethod('cwrap', [
+      _ffiIsValid = _module.callMethod('cwrap', [
         'is_valid',
         'number',
         js.JsArray.from(['number'])
@@ -84,15 +120,15 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
 
   @override
   int newExpression({required String expression, required Map<String, double> variables, Map<String, double>? constants}) {
-    final pExpression = ffiNewExpression.apply([toNativeUtf8(expression)]);
+    final pExpression = _ffiNewExpression.apply([toNativeUtf8(expression)]);
 
     variables
-        .forEach((name, value) => ffiSetVar.apply([toNativeUtf8(name), value, pExpression]));
+        .forEach((name, value) => _ffiSetVar.apply([toNativeUtf8(name), value, pExpression]));
 
     constants
-        ?.forEach((name, value) => ffiSetConst.apply([toNativeUtf8(name), value, pExpression]));
+        ?.forEach((name, value) => _ffiSetConst.apply([toNativeUtf8(name), value, pExpression]));
 
-    ffiParseExpression.apply([pExpression]);
+    _ffiParseExpression.apply([pExpression]);
 
     return pExpression;
   }
@@ -117,31 +153,31 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
 
   @override
   double getResult(int pExpression) {
-    return ffiGetResult.apply([pExpression]);
+    return _ffiGetResult.apply([pExpression]);
   }
 
   @override
   int isValid(int pExpression) {
-    return ffiIsValid.apply([pExpression]);
+    return _ffiIsValid.apply([pExpression]);
   }
 
   @override
   void setVar(int variableName, double variableValue, int pExpression) {
-    ffiSetVar.apply([variableName, variableValue, pExpression]);
+    _ffiSetVar.apply([variableName, variableValue, pExpression]);
   }
 
   @override
   double getVar(int variableName, int pExpression) {
-    return ffiSetVar.apply([variableName, pExpression]);
+    return _ffiSetVar.apply([variableName, pExpression]);
   }
 
   @override
   void setConst(int variableName, double variableValue, int pExpression) {
-    ffiSetVar.apply([variableName, variableValue, pExpression]);
+    _ffiSetVar.apply([variableName, variableValue, pExpression]);
   }
 
   @override
   double getConst(int variableName, int pExpression) {
-    return ffiSetVar.apply([variableName, pExpression]);
+    return _ffiSetVar.apply([variableName, pExpression]);
   }
 }

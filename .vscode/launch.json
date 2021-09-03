@@ -70,34 +70,35 @@
       "flutterMode": "profile"
     },
     {
-      "name": "flutter_exprtk_windows",
-      "cwd": "flutter_exprtk_windows",
+      "name": "flutter_exprtk_native",
+      "cwd": "flutter_exprtk_native",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "flutter_exprtk_windows (profile mode)",
-      "cwd": "flutter_exprtk_windows",
+      "name": "flutter_exprtk_native (profile mode)",
+      "cwd": "flutter_exprtk_native",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
       "name": "example",
-      "cwd": "flutter_exprtk\\example",
+      "cwd": "flutter_exprtk/example",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": ["-v"]
     },
     {
       "name": "example (profile mode)",
-      "cwd": "flutter_exprtk\\example",
+      "cwd": "flutter_exprtk/example",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
     },
     {
       "name": "example (release mode)",
-      "cwd": "flutter_exprtk\\example",
+      "cwd": "flutter_exprtk/example",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"

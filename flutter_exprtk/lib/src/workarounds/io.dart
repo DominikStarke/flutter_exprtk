@@ -1,18 +1,17 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter_exprtk_android/flutter_exprtk_android.dart';
-import 'package:flutter_exprtk_ios/flutter_exprtk_ios.dart';
-import 'package:flutter_exprtk_windows/flutter_exprtk_windows.dart';
+import 'package:flutter_exprtk_native/flutter_exprtk_native.dart';
 import 'package:flutter_exprtk_platform_interface/flutter_exprtk_platform_interface.dart';
 
 // A workaround for flutter/flutter#52267
 // TODO: revise once the issue got resolved
 void _flutterIssue52267Workaround() {
   if (Platform.isAndroid) {
-    FlutterExprtkPlatform.instance = new FlutterExprtkAndroid();
-  }
-  if (Platform.isIOS) {
-    FlutterExprtkPlatform.instance = new FlutterExprtkIOS();
+    FlutterExprtkPlatform.instance = new FlutterExprtkNative();
+  } else if (Platform.isIOS) {
+    FlutterExprtkPlatform.instance = new FlutterExprtkNative();
+  } else if (Platform.isMacOS) {
+    FlutterExprtkPlatform.instance = new FlutterExprtkNative();
   }
 }
 
@@ -20,7 +19,7 @@ void _flutterIssue52267Workaround() {
 // TODO: revise once the issue got resolved
 void _flutterIssue81421Workaround() {
   if (Platform.isWindows) {
-    FlutterExprtkWindows.registerWith();
+    FlutterExprtkNative.registerWith();
   }
 }
 

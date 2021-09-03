@@ -1,0 +1,37 @@
+name: flutter_exprtk_native
+description: Windows implementation of the flutter_exprtk plugin.
+repository: git@github.com:DominikStarke/flutter_exprtk.git/tree/master/flutter_exprtk_native
+version: 0.0.7
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_exprtk_platform_interface: #^0.0.7
+    path: ../flutter_exprtk_platform_interface
+  ffi: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: flutter_exprtk
+    platforms:
+      android:
+        fileName: flutter_exprtk_native.dart
+        package: com.dost.flutter_exprtk_native
+        pluginClass: FlutterExprtkNativePlugin
+      ios:
+        fileName: flutter_exprtk_native.dart
+        pluginClass: SwiftFlutterExprtkNativePlugin
+      macos:
+        fileName: flutter_exprtk_native.dart
+        pluginClass: FlutterExprtkNativePlugin
+      windows:
+        fileName: flutter_exprtk_native.dart
+        pluginClass: FlutterExprtkNativePlugin

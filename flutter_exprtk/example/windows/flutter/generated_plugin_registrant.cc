@@ -4,9 +4,9 @@
 
 #include "generated_plugin_registrant.h"
 
-#include <flutter_exprtk_windows/flutter_exprtk_windows_plugin.h>
+#include <flutter_exprtk_native/flutter_exprtk_native_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-  FlutterExprtkWindowsPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("FlutterExprtkWindowsPlugin"));
+  FlutterExprtkNativePluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterExprtkNativePlugin"));
 }

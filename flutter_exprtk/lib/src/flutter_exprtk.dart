@@ -30,11 +30,13 @@ class Expression extends ExpressionInterface {
       Map<String, double>? constants})
       : this._variables = variables,
         this._constants = constants,
-        super(expression: expression, variables: variables, constants: constants) {
-    
-    _variableNames =
-        variables.map((name, value) => MapEntry(
-          name, FlutterExprtkPlatform.instance.toNativeUtf8(name)));
+        super(
+            expression: expression,
+            variables: variables,
+            constants: constants) {
+              
+    _variableNames = variables.map((name, value) =>
+        MapEntry(name, FlutterExprtkPlatform.instance.toNativeUtf8(name)));
 
     _pExpression = FlutterExprtkPlatform.instance.newExpression(
         expression: expression, variables: _variables, constants: _constants);

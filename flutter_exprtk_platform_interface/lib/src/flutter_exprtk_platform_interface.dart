@@ -1,9 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter_exprtk_platform_interface/src/flutter_exprtk_platform_unsupported.dart';
 
-import 'package:flutter_exprtk_platform_interface/src/ffi_defs.dart'
-  if (dart.library.html) 'package:flutter_exprtk_platform_interface/src/wasm_defs.dart';
-
 /// The interface that implementations of flutter_exprtk must implement.
 ///
 /// Platform implementations should extend this class rather than implement it as `flutter_exprtk`
@@ -30,42 +27,6 @@ abstract class FlutterExprtkPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  /// Return a Pointer to a new native Expression
-  /// Note: This shouldn't be called manually
-  late final NewExpression ffiNewExpression;
-
-  /// Parse given native Expression
-  /// Note: This shouldn't be called manually
-  late final ParseExpression ffiParseExpression;
-
-  /// Destruct given native Expression, freeing memory
-  /// Note: This shouldn't be called manually
-  late final DestructExpression ffiDestructExpression;
-
-  /// Return value from given native Expression
-  /// Note: This shouldn't be called manually
-  late final GetValue ffiGetResult;
-
-  /// Set given variable for given native Expression
-  /// Note: This shouldn't be called manually
-  late final SetVarOrConst ffiSetVar;
-
-  /// Set given const for given native Expression
-  /// Note: This shouldn't be called manually
-  late final SetVarOrConst ffiSetConst;
-
-  /// Returns given variable from the native Expression
-  /// Note: This shouldn't be called manually
-  late final GetVarOrConst ffiGetVar;
-
-  /// Returns given const from the native Expression
-  /// Note: This shouldn't be called manually
-  late final GetVarOrConst ffiGetConst;
-
-  /// Checks whether given native Expression is valid
-  /// Note: This shouldn't be called manually
-  late final IsValid ffiIsValid;
-
   /// Creates a new Expression instance in the native library
   /// Note: This shouldn't be called manually
   int newExpression(
@@ -73,20 +34,28 @@ abstract class FlutterExprtkPlatform extends PlatformInterface {
       required Map<String, double> variables,
       Map<String, double>? constants});
 
+  /// Get a pointer to a char* array
   int toNativeUtf8(String string);
 
+  /// Clear the expresseion
   void clear(int pExpression);
 
+  /// Check whether an expression is valid
   int isValid(int pExpression);
 
+  /// Get the result of an expresssion
   double getResult(int pExpression);
 
+  /// Set variable variableName to variableValue
   void setVar(int variableName, double variableValue, int pExpression);
 
+  /// Get the current value of the variable variableName
   double getVar(int variableName, int pExpression);
 
-  void setConst(int variableName, double variableValue, int pExpression);
+  /// Set the current value of the constant constantName
+  void setConst(int constantName, double variableValue, int pExpression);
 
-  double getConst(int variableName, int pExpression);
+  /// Get the value of constant constantName
+  double getConst(int constantName, int pExpression);
 }
 
