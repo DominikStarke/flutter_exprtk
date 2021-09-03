@@ -1,0 +1,2 @@
+  enable-experiment:
+    - nonfunction-type-aliases

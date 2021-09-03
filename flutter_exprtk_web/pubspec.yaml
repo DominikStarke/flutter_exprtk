@@ -1,0 +1,32 @@
+name: flutter_exprtk_web
+description: Web implementation of the flutter_exprtk plugin.
+repository: git@github.com:DominikStarke/flutter_exprtk.git/tree/master/flutter_exprtk_web
+version: 0.0.7
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_exprtk_platform_interface: #^0.0.7
+    path: ../flutter_exprtk_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: flutter_exprtk
+    platforms:
+      web:
+        pluginClass: FlutterExprtkWeb
+        fileName: flutter_exprtk_web.dart
+
+  assets:
+    - assets/flutter_exprtk.js
+    - assets/flutter_exprtk.wasm

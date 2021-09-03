@@ -1,0 +1,39 @@
+name: flutter_exprtk
+description: Add description
+repository: git@github.com:DominikStarke/flutter_exprtk.git/tree/master/flutter_exprtk
+version: 0.0.7
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # The design on https://flutter.dev/go/federated-plugins was to leave
+  # this constraint as "any". We cannot do it right now as it fails pub publish
+  # validation, so we set a ^ constraint.
+  # TODO: Revisit this (either update this part in the design or the pub tool).
+  # https://github.com/flutter/flutter/issues/46264
+  flutter_exprtk_platform_interface: #^0.0.7
+    path: ../flutter_exprtk_platform_interface
+  flutter_exprtk_android: #^0.0.7
+    path: ../flutter_exprtk_android
+  flutter_exprtk_ios: #^0.0.7
+    path: ../flutter_exprtk_ios
+  flutter_exprtk_windows: #^0.0.7
+    path: ../flutter_exprtk_windows
+  flutter_exprtk_web: #^0.0.7
+    path: ../flutter_exprtk_web
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: flutter_exprtk_android
+      ios:
+        default_package: flutter_exprtk_ios
+      windows:
+        default_package: flutter_exprtk_windows
+      web:
+        default_package: flutter_exprtk_web
