@@ -180,4 +180,9 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
   double getConst(int variableName, int pExpression) {
     return _ffiSetVar.apply([variableName, pExpression]);
   }
+
+  @override
+  void free(int ptr) {
+    
+  }
 }

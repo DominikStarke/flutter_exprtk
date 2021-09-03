@@ -146,4 +146,9 @@ class FlutterExprtkNative extends FlutterExprtkPlatform {
   void setVar(int variableName, double variableValue, int pExpression) {
     _ffiSetVar(variableName, variableValue, pExpression);
   }
+
+  @override
+  void free(int ptr) {
+    malloc.free(Pointer.fromAddress(ptr));
+  }
 }

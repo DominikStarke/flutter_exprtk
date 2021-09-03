@@ -57,5 +57,7 @@ abstract class FlutterExprtkPlatform extends PlatformInterface {
 
   /// Get the value of constant constantName
   double getConst(int constantName, int pExpression);
+
+  void free(int ptr);
 }
 

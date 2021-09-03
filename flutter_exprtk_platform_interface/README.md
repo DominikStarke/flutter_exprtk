@@ -9,9 +9,9 @@ same interface.
 # Usage
 
 To implement a new platform-specific implementation of `flutter_exprtk`, extend
-[`FlutterExprtkPlatform`][2] with an implementation that performs the
-platform-specific behavior, and when you register your plugin, set the default
-`FlutterExprtkPlatform` by calling
+[`FlutterExprtkPlatform`][2] as well as [`ExpressionInterface`][3] with an
+implementation that performs the platform-specific behavior, and when you
+register your plugin, set the default `FlutterExprtkPlatform` by calling
 `FlutterExprtkPlatform.instance = FlutterExprtkMyPlatform()`.
 
 # Note on breaking changes
@@ -24,3 +24,4 @@ on why a less-clean interface is preferable to a breaking change.
 
 [1]: ../flutter_exprtk
 [2]: lib/src/flutter_exprtk_platform_interface.dart
+[2]: lib/src/expression_interface.dart

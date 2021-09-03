@@ -34,7 +34,8 @@ class Expression extends ExpressionInterface {
             expression: expression,
             variables: variables,
             constants: constants) {
-              
+    
+    // Cache variable names, because toNativeUtf8 is slow
     _variableNames = variables.map((name, value) =>
         MapEntry(name, FlutterExprtkPlatform.instance.toNativeUtf8(name)));
 
@@ -52,9 +53,9 @@ class Expression extends ExpressionInterface {
 
   /// Set variable value
   operator []=(String variableName, double variableValue) {
-    final name = _variableNames[variableName];
-    if (name != null) {
-      FlutterExprtkPlatform.instance.setVar(name, variableValue, _pExpression);
+    final pVariableName = _variableNames[variableName];
+    if (pVariableName != null) {
+      FlutterExprtkPlatform.instance.setVar(pVariableName, variableValue, _pExpression);
     } else {
       throw UninitializedVariableException();
     }
@@ -62,9 +63,9 @@ class Expression extends ExpressionInterface {
 
   /// Get variable value
   operator [](String variableName) {
-    final name = _variableNames[variableName];
-    if (name != null) {
-      return FlutterExprtkPlatform.instance.getVar(name, _pExpression);
+    final pVariableName = _variableNames[variableName];
+    if (pVariableName != null) {
+      return FlutterExprtkPlatform.instance.getVar(pVariableName, _pExpression);
     } else {
       throw UninitializedVariableException();
     }
@@ -72,8 +73,9 @@ class Expression extends ExpressionInterface {
 
   /// Free up memory
   clear() {
-    _variableNames.forEach((key, value) {
-      FlutterExprtkPlatform.instance.clear(_pExpression);
-    });
+    FlutterExprtkPlatform.instance.clear(_pExpression);
+    _variableNames.forEach((key, ptr) =>
+      FlutterExprtkPlatform.instance.free(ptr));
+    _pExpression = 0;
   }
 }

@@ -21,36 +21,36 @@ class FlutterExprtkPlatformUnsupported extends FlutterExprtkPlatform {
 
   @override
   double getResult(int pExpression) {
-    // TODO: implement getResult
     throw UnimplementedError();
   }
 
   @override
   int isValid(int pExpression) {
-    // TODO: implement isValid
     throw UnimplementedError();
   }
 
   @override
   void setVar(int variableName, double variableValue, int pExpression) {
-    // TODO: implement setVar
     throw UnimplementedError();
   }
 
   @override
   double getConst(int variableName, int pExpression) {
-    // TODO: implement getConst
     throw UnimplementedError();
   }
 
   @override
   double getVar(int variableName, int pExpression) {
-    // TODO: implement getVar
     throw UnimplementedError();
   }
 
   @override
   void setConst(int variableName, double variableValue, int pExpression) {
-    // TODO: implement setConst
+    throw UnimplementedError();
+  }
+
+  @override
+  void free(int pointer) {
+    throw UnimplementedError();
   }
 }

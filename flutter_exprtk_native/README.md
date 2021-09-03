@@ -1,6 +1,6 @@
 # flutter_exprtk_native
 
-The Windows implementation of [`flutter_exprtk`][1].
+The Windows, Android, iOS and macOS implementation of [`flutter_exprtk`][1].
 
 ## Usage
 
@@ -20,7 +20,7 @@ dependencies:
   ...
 ```
 
-If you wish to use the Windows package only, you can add `flutter_exprtk_native` as a
+If you wish to use the package without web support, you can add `flutter_exprtk_native` as a
 dependency:
 
 ```yaml
