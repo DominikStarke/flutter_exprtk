@@ -10,3 +10,6 @@ build/
 
 android/.cxx
 
+.dart_tool
+.fvm
+**/.packages

@@ -104,4 +104,3 @@ If you try to set a variable which hasn't been initialized an "UninitializedVari
     } on UninitializedVariableException {
         // ... handle exception
     }
-

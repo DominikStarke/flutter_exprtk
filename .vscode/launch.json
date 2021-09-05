@@ -4,25 +4,104 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-  
     {
-      "name": "Debug",
+      "name": "flutter_exprtk",
+      "cwd": "flutter_exprtk",
       "request": "launch",
-      "type": "dart",
-      "args": ["-v"]
+      "type": "dart"
     },
     {
-      "name": "Debug (Profile)",
+      "name": "flutter_exprtk (profile mode)",
+      "cwd": "flutter_exprtk",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "Build Release",
+      "name": "flutter_exprtk_android",
+      "cwd": "flutter_exprtk_android",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_exprtk_android (profile mode)",
+      "cwd": "flutter_exprtk_android",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "flutter_exprtk_ios",
+      "cwd": "flutter_exprtk_ios",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_exprtk_ios (profile mode)",
+      "cwd": "flutter_exprtk_ios",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "flutter_exprtk_platform_interface",
+      "cwd": "flutter_exprtk_platform_interface",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_exprtk_platform_interface (profile mode)",
+      "cwd": "flutter_exprtk_platform_interface",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "flutter_exprtk_web",
+      "cwd": "flutter_exprtk_web",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_exprtk_web (profile mode)",
+      "cwd": "flutter_exprtk_web",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "flutter_exprtk_native",
+      "cwd": "flutter_exprtk_native",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_exprtk_native (profile mode)",
+      "cwd": "flutter_exprtk_native",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "example",
+      "cwd": "flutter_exprtk/example",
+      "request": "launch",
+      "type": "dart",
       "args": ["-v"]
+    },
+    {
+      "name": "example (profile mode)",
+      "cwd": "flutter_exprtk/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+    },
+    {
+      "name": "example (release mode)",
+      "cwd": "flutter_exprtk/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
     }
   ]
 }
