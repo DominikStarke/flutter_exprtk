@@ -1,14 +1,107 @@
-#flutter_federated_plugin_template
+# flutter_exprtk
 
-A manually created template for federated flutter plugins.
-You can use this template to create federated plugins until [`flutter create` is able to create plugins in federal structure](https://github.com/flutter/flutter/issues/43284).
+ffi wrapper for exprtk math expression parser
 
-## Get started
-First, clone this repository, then do the following:
-1. Delete all folders belonging to platforms you don't want to support
-2. Create a file named `FEDERATED_LICENSE_TEMPLATE` in this folder, which will automatically be copied to all subfolders
-3. Edit `FEDERATED_README_TEMPLATE.md` and `FEDERATED_CHANGELOG_TEMPLATE.md` to fit your needs
-4. Run `dart generate.dart plugin_name bundle_identifier version repo_base` with your `plugin_name`, `bundle_identifier` (e.g. `eu.epnw`) and `version` (e.g. `1.0.0`) in this folder to create the template structure.
-  If you plan to publish your package on github you can set `repo_base` so the `repository` fields in all `pubspec.yaml` are set up correctly. If you omit it, no `repository` field is set.
-5. Manually check the `NAME/lib/src/workarounds` folder and remove code form there that you don't need.
-6. Implement your plugin (and don't forget to implement `NAME_paltform_interface/lib/src/NAME_platform_unsupported.dart` as well)
+See https://github.com/ArashPartow/exprtk for details
+
+## Limitations
+Only works with doubles, not vectors etc.
+
+Currently supports Android, MacOS, iOS and Windows
+
+## To install
+    dependencies:
+    flutter:
+        sdk: flutter
+
+    flutter_exprtk: ^0.0.5
+
+Import the library:
+
+    import 'package:flutter_exprtk/flutter_exprtk.dart';
+
+
+## Getting Started
+    // Create a new expression
+    final exp = Expression(
+        expression: "a / b", // The expression
+        variables: { "a": 4, "b": 2 }, // variables
+        constants: {} // Optional constants can be omitted
+    );
+
+    // Get the value
+    print(exp.value); // -> 2
+
+    // Variables can be changed:
+    exp["a"] = 100
+    print(exp.value); // -> 50
+
+    exp["b"] = 50
+    print(exp.value); // -> 2
+
+    // Call clear to free up memory
+    expression.clear();
+
+
+More complex example:
+
+    final exp2 = Expression(
+        expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
+        variables: { "x": 0 }
+    );
+    for (double x = -5; x <= 5; x += 0.001)
+    {
+        exp2["x"] = x;
+        print("${exp2.value}");
+    }
+    // Call clear to free up memory
+    exp2.clear();
+
+In a separate Isolate:
+
+    // Static or global function:
+    Future<List<double>> computeExpression (dynamic _) async {
+        final exp2 = Expression(
+            expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
+            variables: { "x": 0 }
+        );
+        final List<double> results = [];
+
+        for (double x = -5; x <= 5; x += 0.001)
+        {
+            exp2["x"] = x;
+            results.add(exp2.value);
+        }
+        exp2.clear();
+
+        return results;
+    }
+
+    // Then run it for example with compute from flutter:foundation:
+    final results = await compute(computeExpression, null);
+    print("Results $results");
+
+## Handling errors
+
+new Expression() will throw an "InvalidExpressionException" if the expression isn't valid.
+
+If you try to set a variable which hasn't been initialized an "UninitializedVariableException" will be thrown:
+
+    try {
+        final exp = Expression(
+            expression: "///////", // will cause an InvalidExpressionException
+            variables: {}
+        );
+
+        final exp = Expression(
+            expression: "a + b",
+            variables: { "c": 0 } // will cause an UninitializedVariableException
+        );
+        exp["d"] = 0; // will also cause an UninitializedVariableException
+
+    } on InvalidExpressionException {
+        // ... handle exception
+    } on UninitializedVariableException {
+        // ... handle exception
+    }
+
