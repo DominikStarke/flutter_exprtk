@@ -1,4 +1,7 @@
 ## 0.0.7-dev.1
+* Fixed Windows and Android builds
+
+## 0.0.7-dev.1
 * Switched to federated plugin structure
 
 ## 0.0.6-dev.1

@@ -88,6 +88,8 @@ In a separate Isolate:
 
 new Expression() will throw an "InvalidExpressionException" if the expression isn't valid.
 
+A ClearedExpressionException will be thrown if an expression has been cleared.
+
 If you try to set a variable which hasn't been initialized an "UninitializedVariableException" will be thrown:
 
     try {
@@ -105,5 +107,7 @@ If you try to set a variable which hasn't been initialized an "UninitializedVari
     } on InvalidExpressionException {
         // ... handle exception
     } on UninitializedVariableException {
+        // ... handle exception
+    } on ClearedExpressionException {
         // ... handle exception
     }
