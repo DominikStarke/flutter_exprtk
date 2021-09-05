@@ -1,4 +1,7 @@
-## 0.0.7-dev.1
+## 0.0.8
+* Fixed library initialization error
+
+## 0.0.7
 * Fixed Windows and Android builds
 
 ## 0.0.7-dev.1

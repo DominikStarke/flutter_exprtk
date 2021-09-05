@@ -9,6 +9,10 @@ import 'workarounds/web.dart' if (dart.library.io) 'workarounds/io.dart'
 /// Until flutter is able to do this automatically, this has
 /// to be done manually. See the workarounds folder for more
 /// details!
+
+bool isInitialized = false;
 void init() {
+  if(isInitialized) return;
+  isInitialized = true;
   Workarounds.apply();
 }

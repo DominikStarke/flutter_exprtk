@@ -1,5 +1,6 @@
 library flutter_exprtk;
 
+import 'package:flutter_exprtk/flutter_exprtk.dart';
 import 'package:flutter_exprtk_platform_interface/flutter_exprtk_platform_interface.dart';
 export 'package:flutter_exprtk/src/flutter_exprtk_init.dart';
 
@@ -34,7 +35,7 @@ class Expression extends ExpressionInterface {
             expression: expression,
             variables: variables,
             constants: constants) {
-    
+    init();
     // Cache variable names, because toNativeUtf8 is slow
     _variableNames = variables.map((name, value) =>
         MapEntry(name, FlutterExprtkPlatform.instance.toNativeUtf8(name)));
