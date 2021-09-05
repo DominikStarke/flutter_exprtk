@@ -7,11 +7,11 @@ import 'package:flutter_exprtk/src/exceptions.dart';
 export 'package:flutter_exprtk/src/exceptions.dart';
 
 class Expression extends ExpressionInterface {
-  final Map<String, double> _variables;
+  final Map<String, double> _stringCache;
   final Map<String, double>? _constants;
 
   late final Map<String, int> _variableNames;
-  late final int _pExpression;
+  int _pExpression = 0;
 
   /// Create a new math expression
   /// for example:
@@ -28,7 +28,7 @@ class Expression extends ExpressionInterface {
       {required String expression,
       required Map<String, double> variables,
       Map<String, double>? constants})
-      : this._variables = variables,
+      : this._stringCache = variables,
         this._constants = constants,
         super(
             expression: expression,
@@ -40,7 +40,7 @@ class Expression extends ExpressionInterface {
         MapEntry(name, FlutterExprtkPlatform.instance.toNativeUtf8(name)));
 
     _pExpression = FlutterExprtkPlatform.instance.newExpression(
-        expression: expression, variables: _variables, constants: _constants);
+        expression: expression, variables: _stringCache, constants: _constants);
 
     if (FlutterExprtkPlatform.instance.isValid(_pExpression) == 0) {
       clear();
@@ -49,10 +49,14 @@ class Expression extends ExpressionInterface {
   }
 
   /// Returns the calculated value
-  get value => FlutterExprtkPlatform.instance.getResult(_pExpression);
+  get value {
+    if(_pExpression == 0) throw ClearedExpressionException();
+    return FlutterExprtkPlatform.instance.getResult(_pExpression);
+  }
 
   /// Set variable value
   operator []=(String variableName, double variableValue) {
+    if(_pExpression == 0) throw ClearedExpressionException();
     final pVariableName = _variableNames[variableName];
     if (pVariableName != null) {
       FlutterExprtkPlatform.instance.setVar(pVariableName, variableValue, _pExpression);
@@ -63,6 +67,7 @@ class Expression extends ExpressionInterface {
 
   /// Get variable value
   operator [](String variableName) {
+    if(_pExpression == 0) throw ClearedExpressionException();
     final pVariableName = _variableNames[variableName];
     if (pVariableName != null) {
       return FlutterExprtkPlatform.instance.getVar(pVariableName, _pExpression);
@@ -73,6 +78,7 @@ class Expression extends ExpressionInterface {
 
   /// Free up memory
   clear() {
+    if(_pExpression == 0) throw ClearedExpressionException();
     FlutterExprtkPlatform.instance.clear(_pExpression);
     _variableNames.forEach((key, ptr) =>
       FlutterExprtkPlatform.instance.free(ptr));

@@ -4,5 +4,6 @@
 
 .packages
 .pub/
+.dart_tool/
 
 build/

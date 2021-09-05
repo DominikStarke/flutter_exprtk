@@ -749,10 +749,6 @@ function cwrap(ident, returnType, argTypes, opts) {
 
 // We used to include malloc/free by default in the past. Show a helpful error in
 // builds with assertions.
-function _free() {
-  // Show a helpful error since we used to include free by default in the past.
-  abort("free() called but not included in the build - add '_free' to EXPORTED_FUNCTIONS");
-}
 
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
@@ -1999,6 +1995,9 @@ var _emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = function()
 
 /** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
+
+/** @type {function(...*):?} */
+var _free = Module["_free"] = createExportWrapper("free");
 
 
 

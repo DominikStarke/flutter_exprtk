@@ -45,9 +45,9 @@ class FlutterExprtkNative extends FlutterExprtkPlatform {
 
   FlutterExprtkNative() {
     final DynamicLibrary expressionLib = Platform.isAndroid
-        ? DynamicLibrary.open("libflutter_exprtk.so")
+        ? DynamicLibrary.open("libflutter_exprtk_native.so")
         : Platform.isWindows
-            ? DynamicLibrary.open("flutter_exprtk_plugin.dll")
+            ? DynamicLibrary.open("flutter_exprtk_native_plugin.dll")
             : DynamicLibrary.process();
 
     _ffiNewExpression = expressionLib

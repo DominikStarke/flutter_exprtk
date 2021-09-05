@@ -1,4 +1,4 @@
-package com.example.flutter_exprtk_native
+package com.dost.flutter_exprtk_native
 
 import androidx.annotation.NonNull
 

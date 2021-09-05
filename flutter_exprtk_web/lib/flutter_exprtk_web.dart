@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'dart:html';
-import 'package:flutter/services.dart';
-
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter_exprtk_platform_interface/flutter_exprtk_platform_interface.dart';
 import 'dart:js' as js;
@@ -46,6 +43,9 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
   /// Note: This shouldn't be called manually
   late final js.JsFunction _ffiIsValid;
 
+  /// Free memory
+  late final js.JsFunction _ffiFree;
+
   FlutterExprtkWeb() {
     asyncInit();
   }
@@ -57,7 +57,6 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
     head.append(script);
 
     script.addEventListener("load", (event) {
-      print("EVENT $event");
       _module = js.context['Module'];
 
       _ffiNewExpression = _module
@@ -110,12 +109,18 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
         'number',
         js.JsArray.from(['number'])
       ]);
+
+      _ffiFree = _module.callMethod('cwrap', [
+        'free',
+        'void',
+        js.JsArray.from(['number'])
+      ]);
     });
   }
 
   @override
   void clear(int pExpression) {
-    // TODO: implement clear
+    _ffiDestructExpression.apply([pExpression]);
   }
 
   @override
@@ -141,14 +146,6 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
   /// Registers the Windows implementation.
   static void registerWith(Registrar registrar) {
     FlutterExprtkPlatform.instance = new FlutterExprtkWeb();
-  }
-
-  Future<ByteData> loadAsset (String resource) async {
-    return await rootBundle.load(resource);
-  }
-
-  Future<void> loadJS () async {
-      // final moduleLoader = await rootBundle.loadString("packages/flutter_exprtk_web/assets/flutter_exprtk.js", );
   }
 
   @override
@@ -183,6 +180,6 @@ class FlutterExprtkWeb extends FlutterExprtkPlatform {
 
   @override
   void free(int ptr) {
-    
+    _ffiFree.apply([ptr]);
   }
 }

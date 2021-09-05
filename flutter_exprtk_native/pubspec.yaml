@@ -10,7 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_exprtk_platform_interface: ^0.0.7-dev.1
+  flutter_exprtk_platform_interface: # ^0.0.7-dev.1
+    path: ../flutter_exprtk_platform_interface
   ffi: ^1.1.2
 
 dev_dependencies:

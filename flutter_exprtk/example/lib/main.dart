@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
               results.add(exp2.value);
             }
             print(results);
-            // exp2.clear();
+            exp2.clear();
 
             // final results = await compute(computeExpression, null);
             // print("Results $results");
