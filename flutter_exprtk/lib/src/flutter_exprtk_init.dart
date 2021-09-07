@@ -12,7 +12,7 @@ import 'workarounds/web.dart' if (dart.library.io) 'workarounds/io.dart'
 
 bool isInitialized = false;
 void init() {
-  if(isInitialized) return;
+  if (isInitialized) return;
   isInitialized = true;
   Workarounds.apply();
 }

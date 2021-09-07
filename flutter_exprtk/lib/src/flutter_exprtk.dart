@@ -51,16 +51,17 @@ class Expression extends ExpressionInterface {
 
   /// Returns the calculated value
   get value {
-    if(_pExpression == 0) throw ClearedExpressionException();
+    if (_pExpression == 0) throw ClearedExpressionException();
     return FlutterExprtkPlatform.instance.getResult(_pExpression);
   }
 
   /// Set variable value
   operator []=(String variableName, double variableValue) {
-    if(_pExpression == 0) throw ClearedExpressionException();
+    if (_pExpression == 0) throw ClearedExpressionException();
     final pVariableName = _variableNames[variableName];
     if (pVariableName != null) {
-      FlutterExprtkPlatform.instance.setVar(pVariableName, variableValue, _pExpression);
+      FlutterExprtkPlatform.instance
+          .setVar(pVariableName, variableValue, _pExpression);
     } else {
       throw UninitializedVariableException();
     }
@@ -68,7 +69,7 @@ class Expression extends ExpressionInterface {
 
   /// Get variable value
   operator [](String variableName) {
-    if(_pExpression == 0) throw ClearedExpressionException();
+    if (_pExpression == 0) throw ClearedExpressionException();
     final pVariableName = _variableNames[variableName];
     if (pVariableName != null) {
       return FlutterExprtkPlatform.instance.getVar(pVariableName, _pExpression);
@@ -79,10 +80,10 @@ class Expression extends ExpressionInterface {
 
   /// Free up memory
   clear() {
-    if(_pExpression == 0) throw ClearedExpressionException();
+    if (_pExpression == 0) throw ClearedExpressionException();
     FlutterExprtkPlatform.instance.clear(_pExpression);
-    _variableNames.forEach((key, ptr) =>
-      FlutterExprtkPlatform.instance.free(ptr));
+    _variableNames
+        .forEach((key, ptr) => FlutterExprtkPlatform.instance.free(ptr));
     _pExpression = 0;
   }
 }

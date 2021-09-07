@@ -14,14 +14,14 @@ Currently supports Android, MacOS, iOS, Web and Windows
     flutter:
         sdk: flutter
 
-    flutter_exprtk: ^0.0.7
+    flutter_exprtk: ^0.0.9
 
 Import the library:
 
     import 'package:flutter_exprtk/flutter_exprtk.dart';
 
 ## Web Platform:
-Web is supported by a wasm module, injected at runtime.
+Web is supported by a wasm module, injected at runtime and adds roughly 1.2MB to your app
 
 
 ## Getting Started

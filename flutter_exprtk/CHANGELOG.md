@@ -1,3 +1,8 @@
+## 0.0.9
+* Fixed missing macOS support
+* Updated Readme
+* Optimized build for web, reducing wasm module size to 1.2MB (from 5.8)
+
 ## 0.0.8
 * Fixed library initialization error
 
