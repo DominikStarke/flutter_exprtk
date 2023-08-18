@@ -55,5 +55,11 @@
     "xtree": "cpp",
     "xutility": "cpp"
   },
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "terminal.integrated.env.osx": {
+    "PATH": "${env:PATH}:${workspaceFolder}/.fvm/flutter_sdk"
+  }
+
 }
