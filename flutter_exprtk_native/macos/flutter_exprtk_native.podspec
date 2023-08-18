@@ -13,7 +13,7 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/flutter_exprtk.cpp', 'Classes/FlutterExprtkNativePlugin.swift'
+  s.source_files     = 'Classes/flutter_exprtk.cpp'
   s.compiler_flags   = '-x objective-c++'
   s.dependency 'FlutterMacOS'
 

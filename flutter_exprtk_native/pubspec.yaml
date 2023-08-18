@@ -25,13 +25,9 @@ flutter:
       android:
         fileName: flutter_exprtk_native.dart
         package: com.dost.flutter_exprtk_native
-        pluginClass: FlutterExprtkNativePlugin
       ios:
         fileName: flutter_exprtk_native.dart
-        pluginClass: SwiftFlutterExprtkNativePlugin
       macos:
         fileName: flutter_exprtk_native.dart
-        pluginClass: FlutterExprtkNativePlugin
       windows:
         fileName: flutter_exprtk_native.dart
-        pluginClass: FlutterExprtkNativePlugin

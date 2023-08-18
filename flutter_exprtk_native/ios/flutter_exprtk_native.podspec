@@ -13,7 +13,8 @@ A new flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files     = 'Classes/SwiftFlutterExprtkNativePlugin.swift', 'Classes/FlutterExprtkNativePlugin.m'
+  s.source_files = 'Classes/flutter_exprtk.cpp'
+  s.compiler_flags = '-x objective-c++'
   s.dependency 'Flutter'
   s.platform = :ios, '8.0'
 
@@ -21,8 +22,8 @@ A new flutter plugin project.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  s.subspec 'flutter_exprtk' do |sp|
-    sp.source_files = 'Classes/flutter_exprtk.cpp'
-    sp.compiler_flags = '-x objective-c++'
-  end
+  # s.subspec 'flutter_exprtk' do |sp|
+  #   sp.source_files = 'Classes/flutter_exprtk.cpp'
+  #   sp.compiler_flags = '-x objective-c++'
+  # end
 end
