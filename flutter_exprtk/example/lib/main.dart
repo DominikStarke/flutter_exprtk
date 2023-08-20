@@ -1,98 +1,61 @@
-import 'package:flutter/foundation.dart';
+import 'package:example/calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_exprtk/flutter_exprtk.dart';
+
+Future<String> loadAsset(BuildContext context) async {
+  final data = await rootBundle
+      .loadString('packages/flutter_exprtk_web/assets/flutter_exprtk.js');
+  return data;
+}
 
 void main() {
   init();
   runApp(MyApp());
 }
 
-Future<List<double>> computeExpression(dynamic param) async {
-  try {
-    final exp2 = Expression(
-        expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
-        variables: {"x": 0});
-    final List<double> results = [];
-
-    for (double x = -5; x <= 5; x += 0.001) {
-      exp2["x"] = x;
-      results.add(exp2.value);
-    }
-    exp2.clear();
-    return results;
-  } catch (e) {
-    print(e.runtimeType);
-  }
-  return [];
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-Future<String> loadAsset(BuildContext context) async {
-  final data = await rootBundle
-      .loadString('packages/flutter_exprtk_web/assets/flutter_exprtk.js');
-
-  return data;
-}
-
-class _MyAppState extends State<MyApp> {
-  static Future<List<double>> computeExpression(dynamic param) async {
-    try {
-      final exp2 = Expression(
-          expression: "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
-          variables: {"x": 0});
-      final List<double> results = [];
-
-      for (double x = -5; x <= 5; x += 0.001) {
-        exp2["x"] = x;
-        results.add(exp2.value);
-      }
-      exp2.clear();
-      return results;
-    } catch (e) {
-      print("ERROR : INVALID");
-    }
-    return [];
-  }
-
-  @override
-  void initState() {
-    super.initState();
+class MyApp extends StatelessWidget {
+  ThemeData configureTheme (ThemeData theme) {
+    return theme.copyWith(
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(theme.colorScheme.secondary),
+          foregroundColor: MaterialStateProperty.all(theme.colorScheme.onSecondary),
+          textStyle: MaterialStateProperty.all(TextStyle(
+            fontSize: 24
+          ))
+        )
+      )
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // loadAsset(context);
+    final themeColor = Colors.teal;
+
+    final ThemeData darkTheme = ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: themeColor,
+        brightness: Brightness.dark
+      )
+    );
+
+    final lightTheme = ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: themeColor,
+        brightness: Brightness.light
+      )
+    );
+
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expression plugin example'),
+      debugShowCheckedModeBanner: false,
+      title: 'exprtk calculator',
+      theme: configureTheme(lightTheme),
+      darkTheme: configureTheme(darkTheme),
+      home: SafeArea(
+        child: Material(
+          child: Calculator(),
         ),
-        body: Center(
-            child: OutlinedButton(
-          onPressed: () async {
-            final exp = Expression(
-                expression:
-                    "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)",
-                variables: {"x": 0});
-            final List<double> results = [];
-
-            for (double x = -5; x <= 5; x += 0.001) {
-              exp["x"] = x;
-              results.add(exp.value);
-            }
-            print(results);
-            exp.clear();
-
-            final results2 = await compute(computeExpression, null);
-            print("Results $results2");
-          },
-          child: Text("Run"),
-        )),
       ),
     );
   }
