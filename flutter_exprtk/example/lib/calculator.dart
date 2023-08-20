@@ -1,5 +1,5 @@
-import 'package:example/keyboard.dart';
-import 'package:example/theme.dart';
+import 'package:exprtk_example/keyboard.dart';
+import 'package:exprtk_example/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exprtk/flutter_exprtk.dart';
 

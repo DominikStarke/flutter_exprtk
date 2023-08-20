@@ -80,27 +80,24 @@ packages:
   flutter_exprtk_native:
     dependency: transitive
     description:
-      name: flutter_exprtk_native
-      sha256: f21a03324198c28e103db030db9f15db267584fe5a1d04319cc7461277ab2b20
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.7"
+      path: "../../flutter_exprtk_native"
+      relative: true
+    source: path
+    version: "0.0.8"
   flutter_exprtk_platform_interface:
     dependency: transitive
     description:
-      name: flutter_exprtk_platform_interface
-      sha256: "84b817af2dc1237a3922413efba97697b40e052ac72243487080964eb1450914"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.7"
+      path: "../../flutter_exprtk_platform_interface"
+      relative: true
+    source: path
+    version: "0.0.8"
   flutter_exprtk_web:
     dependency: transitive
     description:
-      name: flutter_exprtk_web
-      sha256: "0673da61d56013896d344beb748d9f3df4b7f4d5f43b123ec3dac8d23cf7af02"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.8"
+      path: "../../flutter_exprtk_web"
+      relative: true
+    source: path
+    version: "0.0.9"
   flutter_test:
     dependency: "direct dev"
     description: flutter

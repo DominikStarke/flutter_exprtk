@@ -1,4 +1,4 @@
-import 'package:example/theme.dart';
+import 'package:exprtk_example/theme.dart';
 import 'package:flutter/material.dart';
 
 typedef OnPressFn = void Function(String);
