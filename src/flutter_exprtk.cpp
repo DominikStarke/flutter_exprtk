@@ -1,4 +1,4 @@
-#include "ext/exprtk/exprtk.hpp"
+#include "third_party/exprtk/exprtk.hpp"
 
 #ifdef WIN32
 #define EXTERNC extern "C" __declspec( dllexport )

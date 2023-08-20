@@ -1,7 +1,7 @@
 name: flutter_exprtk
 description: flutter_exprtk is a FFI wrapper for the exptrk Mathematical Expressions Toolkit Library
 repository: https://github.com/DominikStarke/flutter_exprtk/
-version: 0.0.9
+version: 0.0.10
 
 environment:
   sdk: ">=2.13.0 <3.0.0"
@@ -17,12 +17,15 @@ dependencies:
   # validation, so we set a ^ constraint.
   # TODO: Revisit this (either update this part in the design or the pub tool).
   # https://github.com/flutter/flutter/issues/46264
-  flutter_exprtk_platform_interface: ^0.0.7
-    #path: ../flutter_exprtk_platform_interface
-  flutter_exprtk_native: ^0.0.7
-    #path: ../flutter_exprtk_native
-  flutter_exprtk_web: ^0.0.8
-    #path: ../flutter_exprtk_web
+  # flutter_exprtk_platform_interface: ^0.0.8
+  flutter_exprtk_platform_interface:
+    path: ../flutter_exprtk_platform_interface
+  # flutter_exprtk_native: ^0.0.8
+  flutter_exprtk_native:
+    path: ../flutter_exprtk_native
+  # flutter_exprtk_web: ^0.0.9
+  flutter_exprtk_web:
+    path: ../flutter_exprtk_web
 
 
 flutter:
