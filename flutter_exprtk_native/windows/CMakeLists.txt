@@ -7,7 +7,6 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 set(PLUGIN_NAME "flutter_exprtk_native_plugin")
 
 add_library(${PLUGIN_NAME} SHARED
-  "flutter_exprtk_native_plugin.cpp"
   "flutter_exprtk.cpp"
 )
 
